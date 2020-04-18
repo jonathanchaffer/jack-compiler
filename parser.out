@@ -1,0 +1,3165 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> class
+Rule 1     class -> CLASS className LCURLY classVarDecs subroutineDecs RCURLY
+Rule 2     classVarDecs -> STATIC type varName commaVarNames SEMICOLON classVarDecs
+Rule 3     classVarDecs -> FIELD type varName commaVarNames SEMICOLON classVarDecs
+Rule 4     classVarDecs -> empty
+Rule 5     type -> INT
+Rule 6     type -> CHAR
+Rule 7     type -> BOOLEAN
+Rule 8     type -> className
+Rule 9     subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+Rule 10    subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+Rule 11    subroutineDecs -> FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+Rule 12    subroutineDecs -> FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+Rule 13    subroutineDecs -> METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+Rule 14    subroutineDecs -> METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+Rule 15    subroutineDecs -> empty
+Rule 16    parameterList -> type varName additionalParameters
+Rule 17    parameterList -> empty
+Rule 18    additionalParameters -> COMMA type varName additionalParameters
+Rule 19    additionalParameters -> empty
+Rule 20    subroutineBody -> LCURLY varDecs statements RCURLY
+Rule 21    varDecs -> VAR type varName commaVarNames SEMICOLON varDecs
+Rule 22    varDecs -> empty
+Rule 23    commaVarNames -> COMMA varName commaVarNames
+Rule 24    commaVarNames -> empty
+Rule 25    className -> IDENTIFIER
+Rule 26    subroutineName -> IDENTIFIER
+Rule 27    varName -> IDENTIFIER
+Rule 28    statements -> statement statements
+Rule 29    statements -> empty
+Rule 30    statement -> letStatement
+Rule 31    statement -> ifStatement
+Rule 32    statement -> whileStatement
+Rule 33    statement -> doStatement
+Rule 34    statement -> returnStatement
+Rule 35    letStatement -> LET varName EQ expression SEMICOLON
+Rule 36    letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+Rule 37    ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY
+Rule 38    ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+Rule 39    whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY
+Rule 40    doStatement -> DO subroutineCall SEMICOLON
+Rule 41    returnStatement -> RETURN SEMICOLON
+Rule 42    returnStatement -> RETURN expression SEMICOLON
+Rule 43    expression -> term opTerms
+Rule 44    opTerms -> op term opTerms
+Rule 45    opTerms -> empty
+Rule 46    term -> INT_CONST
+Rule 47    term -> LPAREN expression RPAREN
+Rule 48    term -> STRING_CONST
+Rule 49    term -> keywordConstant
+Rule 50    term -> varName
+Rule 51    term -> varName LSQUARE expression RSQUARE
+Rule 52    term -> subroutineCall
+Rule 53    term -> unaryOp term
+Rule 54    subroutineCall -> subroutineName LPAREN expressionList RPAREN
+Rule 55    subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN
+Rule 56    subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN
+Rule 57    expressionList -> expression commaExpressions
+Rule 58    expressionList -> empty
+Rule 59    commaExpressions -> COMMA expression commaExpressions
+Rule 60    commaExpressions -> empty
+Rule 61    op -> PLUS
+Rule 62    op -> MINUS
+Rule 63    op -> TIMES
+Rule 64    op -> DIVIDE
+Rule 65    op -> AMP
+Rule 66    op -> PIPE
+Rule 67    op -> LT
+Rule 68    op -> GT
+Rule 69    op -> EQ
+Rule 70    unaryOp -> MINUS
+Rule 71    unaryOp -> TILDE
+Rule 72    keywordConstant -> TRUE
+Rule 73    keywordConstant -> FALSE
+Rule 74    keywordConstant -> NULL
+Rule 75    keywordConstant -> THIS
+Rule 76    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AMP                  : 65
+BOOLEAN              : 7
+CHAR                 : 6
+CLASS                : 1
+COMMA                : 18 23 59
+CONSTRUCTOR          : 9 10
+DIVIDE               : 64
+DO                   : 40
+DOT                  : 55 56
+ELSE                 : 38
+EQ                   : 35 36 69
+FALSE                : 73
+FIELD                : 3
+FUNCTION             : 11 12
+GT                   : 68
+IDENTIFIER           : 25 26 27
+IF                   : 37 38
+INT                  : 5
+INT_CONST            : 46
+LCURLY               : 1 20 37 38 38 39
+LET                  : 35 36
+LPAREN               : 9 10 11 12 13 14 37 38 39 47 54 55 56
+LSQUARE              : 36 51
+LT                   : 67
+METHOD               : 13 14
+MINUS                : 62 70
+NULL                 : 74
+PIPE                 : 66
+PLUS                 : 61
+RCURLY               : 1 20 37 38 38 39
+RETURN               : 41 42
+RPAREN               : 9 10 11 12 13 14 37 38 39 47 54 55 56
+RSQUARE              : 36 51
+SEMICOLON            : 2 3 21 35 36 40 41 42
+STATIC               : 2
+STRING_CONST         : 48
+THIS                 : 75
+TILDE                : 71
+TIMES                : 63
+TRUE                 : 72
+VAR                  : 21
+VOID                 : 9 11 13
+WHILE                : 39
+error                : 
+
+Nonterminals, with rules where they appear
+
+additionalParameters : 16 18
+class                : 0
+className            : 1 8 55
+classVarDecs         : 1 2 3
+commaExpressions     : 57 59
+commaVarNames        : 2 3 21 23
+doStatement          : 33
+empty                : 4 15 17 19 22 24 29 45 58 60
+expression           : 35 36 36 37 38 39 42 47 51 57 59
+expressionList       : 54 55 56
+ifStatement          : 31
+keywordConstant      : 49
+letStatement         : 30
+op                   : 44
+opTerms              : 43 44
+parameterList        : 9 10 11 12 13 14
+returnStatement      : 34
+statement            : 28
+statements           : 20 28 37 38 38 39
+subroutineBody       : 9 10 11 12 13 14
+subroutineCall       : 40 52
+subroutineDecs       : 1 9 10 11 12 13 14
+subroutineName       : 9 10 11 12 13 14 54 55 56
+term                 : 43 44 53
+type                 : 2 3 10 12 14 16 18 21
+unaryOp              : 53
+varDecs              : 20 21
+varName              : 2 3 16 18 21 23 35 36 50 51 56
+whileStatement       : 32
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . class
+    (1) class -> . CLASS className LCURLY classVarDecs subroutineDecs RCURLY
+
+    CLASS           shift and go to state 1
+
+    class                          shift and go to state 2
+
+state 1
+
+    (1) class -> CLASS . className LCURLY classVarDecs subroutineDecs RCURLY
+    (25) className -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 3
+
+state 2
+
+    (0) S' -> class .
+
+
+
+state 3
+
+    (1) class -> CLASS className . LCURLY classVarDecs subroutineDecs RCURLY
+
+    LCURLY          shift and go to state 5
+
+
+state 4
+
+    (25) className -> IDENTIFIER .
+
+    IDENTIFIER      reduce using rule 25 (className -> IDENTIFIER .)
+    LCURLY          reduce using rule 25 (className -> IDENTIFIER .)
+
+
+state 5
+
+    (1) class -> CLASS className LCURLY . classVarDecs subroutineDecs RCURLY
+    (2) classVarDecs -> . STATIC type varName commaVarNames SEMICOLON classVarDecs
+    (3) classVarDecs -> . FIELD type varName commaVarNames SEMICOLON classVarDecs
+    (4) classVarDecs -> . empty
+    (76) empty -> .
+
+    STATIC          shift and go to state 8
+    FIELD           shift and go to state 7
+    CONSTRUCTOR     reduce using rule 76 (empty -> .)
+    FUNCTION        reduce using rule 76 (empty -> .)
+    METHOD          reduce using rule 76 (empty -> .)
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    classVarDecs                   shift and go to state 6
+    empty                          shift and go to state 9
+
+state 6
+
+    (1) class -> CLASS className LCURLY classVarDecs . subroutineDecs RCURLY
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 13
+    empty                          shift and go to state 14
+
+state 7
+
+    (3) classVarDecs -> FIELD . type varName commaVarNames SEMICOLON classVarDecs
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 19
+
+state 8
+
+    (2) classVarDecs -> STATIC . type varName commaVarNames SEMICOLON classVarDecs
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 20
+
+state 9
+
+    (4) classVarDecs -> empty .
+
+    CONSTRUCTOR     reduce using rule 4 (classVarDecs -> empty .)
+    FUNCTION        reduce using rule 4 (classVarDecs -> empty .)
+    METHOD          reduce using rule 4 (classVarDecs -> empty .)
+    RCURLY          reduce using rule 4 (classVarDecs -> empty .)
+
+
+state 10
+
+    (11) subroutineDecs -> FUNCTION . VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> FUNCTION . type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    VOID            shift and go to state 21
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 22
+
+state 11
+
+    (9) subroutineDecs -> CONSTRUCTOR . VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> CONSTRUCTOR . type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    VOID            shift and go to state 23
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 24
+
+state 12
+
+    (13) subroutineDecs -> METHOD . VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> METHOD . type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    VOID            shift and go to state 25
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 26
+
+state 13
+
+    (1) class -> CLASS className LCURLY classVarDecs subroutineDecs . RCURLY
+
+    RCURLY          shift and go to state 27
+
+
+state 14
+
+    (15) subroutineDecs -> empty .
+
+    RCURLY          reduce using rule 15 (subroutineDecs -> empty .)
+
+
+state 15
+
+    (6) type -> CHAR .
+
+    IDENTIFIER      reduce using rule 6 (type -> CHAR .)
+
+
+state 16
+
+    (5) type -> INT .
+
+    IDENTIFIER      reduce using rule 5 (type -> INT .)
+
+
+state 17
+
+    (7) type -> BOOLEAN .
+
+    IDENTIFIER      reduce using rule 7 (type -> BOOLEAN .)
+
+
+state 18
+
+    (8) type -> className .
+
+    IDENTIFIER      reduce using rule 8 (type -> className .)
+
+
+state 19
+
+    (3) classVarDecs -> FIELD type . varName commaVarNames SEMICOLON classVarDecs
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 28
+
+state 20
+
+    (2) classVarDecs -> STATIC type . varName commaVarNames SEMICOLON classVarDecs
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 30
+
+state 21
+
+    (11) subroutineDecs -> FUNCTION VOID . subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 31
+
+state 22
+
+    (12) subroutineDecs -> FUNCTION type . subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 33
+
+state 23
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID . subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 34
+
+state 24
+
+    (10) subroutineDecs -> CONSTRUCTOR type . subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 35
+
+state 25
+
+    (13) subroutineDecs -> METHOD VOID . subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 36
+
+state 26
+
+    (14) subroutineDecs -> METHOD type . subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 37
+
+state 27
+
+    (1) class -> CLASS className LCURLY classVarDecs subroutineDecs RCURLY .
+
+    $end            reduce using rule 1 (class -> CLASS className LCURLY classVarDecs subroutineDecs RCURLY .)
+
+
+state 28
+
+    (3) classVarDecs -> FIELD type varName . commaVarNames SEMICOLON classVarDecs
+    (23) commaVarNames -> . COMMA varName commaVarNames
+    (24) commaVarNames -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 38
+    SEMICOLON       reduce using rule 76 (empty -> .)
+
+    commaVarNames                  shift and go to state 39
+    empty                          shift and go to state 40
+
+state 29
+
+    (27) varName -> IDENTIFIER .
+
+    EQ              reduce using rule 27 (varName -> IDENTIFIER .)
+    LSQUARE         reduce using rule 27 (varName -> IDENTIFIER .)
+    COMMA           reduce using rule 27 (varName -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 27 (varName -> IDENTIFIER .)
+    RPAREN          reduce using rule 27 (varName -> IDENTIFIER .)
+
+
+state 30
+
+    (2) classVarDecs -> STATIC type varName . commaVarNames SEMICOLON classVarDecs
+    (23) commaVarNames -> . COMMA varName commaVarNames
+    (24) commaVarNames -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 38
+    SEMICOLON       reduce using rule 76 (empty -> .)
+
+    commaVarNames                  shift and go to state 41
+    empty                          shift and go to state 40
+
+state 31
+
+    (11) subroutineDecs -> FUNCTION VOID subroutineName . LPAREN parameterList RPAREN subroutineBody subroutineDecs
+
+    LPAREN          shift and go to state 42
+
+
+state 32
+
+    (26) subroutineName -> IDENTIFIER .
+
+    LPAREN          reduce using rule 26 (subroutineName -> IDENTIFIER .)
+
+
+state 33
+
+    (12) subroutineDecs -> FUNCTION type subroutineName . LPAREN parameterList RPAREN subroutineBody subroutineDecs
+
+    LPAREN          shift and go to state 43
+
+
+state 34
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID subroutineName . LPAREN parameterList RPAREN subroutineBody subroutineDecs
+
+    LPAREN          shift and go to state 44
+
+
+state 35
+
+    (10) subroutineDecs -> CONSTRUCTOR type subroutineName . LPAREN parameterList RPAREN subroutineBody subroutineDecs
+
+    LPAREN          shift and go to state 45
+
+
+state 36
+
+    (13) subroutineDecs -> METHOD VOID subroutineName . LPAREN parameterList RPAREN subroutineBody subroutineDecs
+
+    LPAREN          shift and go to state 46
+
+
+state 37
+
+    (14) subroutineDecs -> METHOD type subroutineName . LPAREN parameterList RPAREN subroutineBody subroutineDecs
+
+    LPAREN          shift and go to state 47
+
+
+state 38
+
+    (23) commaVarNames -> COMMA . varName commaVarNames
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 48
+
+state 39
+
+    (3) classVarDecs -> FIELD type varName commaVarNames . SEMICOLON classVarDecs
+
+    SEMICOLON       shift and go to state 49
+
+
+state 40
+
+    (24) commaVarNames -> empty .
+
+    SEMICOLON       reduce using rule 24 (commaVarNames -> empty .)
+
+
+state 41
+
+    (2) classVarDecs -> STATIC type varName commaVarNames . SEMICOLON classVarDecs
+
+    SEMICOLON       shift and go to state 50
+
+
+state 42
+
+    (11) subroutineDecs -> FUNCTION VOID subroutineName LPAREN . parameterList RPAREN subroutineBody subroutineDecs
+    (16) parameterList -> . type varName additionalParameters
+    (17) parameterList -> . empty
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (76) empty -> .
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    RPAREN          reduce using rule 76 (empty -> .)
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    parameterList                  shift and go to state 51
+    type                           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 43
+
+    (12) subroutineDecs -> FUNCTION type subroutineName LPAREN . parameterList RPAREN subroutineBody subroutineDecs
+    (16) parameterList -> . type varName additionalParameters
+    (17) parameterList -> . empty
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (76) empty -> .
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    RPAREN          reduce using rule 76 (empty -> .)
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    parameterList                  shift and go to state 54
+    type                           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 44
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN . parameterList RPAREN subroutineBody subroutineDecs
+    (16) parameterList -> . type varName additionalParameters
+    (17) parameterList -> . empty
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (76) empty -> .
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    RPAREN          reduce using rule 76 (empty -> .)
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    parameterList                  shift and go to state 55
+    type                           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 45
+
+    (10) subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN . parameterList RPAREN subroutineBody subroutineDecs
+    (16) parameterList -> . type varName additionalParameters
+    (17) parameterList -> . empty
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (76) empty -> .
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    RPAREN          reduce using rule 76 (empty -> .)
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    parameterList                  shift and go to state 56
+    type                           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 46
+
+    (13) subroutineDecs -> METHOD VOID subroutineName LPAREN . parameterList RPAREN subroutineBody subroutineDecs
+    (16) parameterList -> . type varName additionalParameters
+    (17) parameterList -> . empty
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (76) empty -> .
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    RPAREN          reduce using rule 76 (empty -> .)
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    parameterList                  shift and go to state 57
+    type                           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 47
+
+    (14) subroutineDecs -> METHOD type subroutineName LPAREN . parameterList RPAREN subroutineBody subroutineDecs
+    (16) parameterList -> . type varName additionalParameters
+    (17) parameterList -> . empty
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (76) empty -> .
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    RPAREN          reduce using rule 76 (empty -> .)
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    parameterList                  shift and go to state 58
+    type                           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 48
+
+    (23) commaVarNames -> COMMA varName . commaVarNames
+    (23) commaVarNames -> . COMMA varName commaVarNames
+    (24) commaVarNames -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 38
+    SEMICOLON       reduce using rule 76 (empty -> .)
+
+    commaVarNames                  shift and go to state 59
+    empty                          shift and go to state 40
+
+state 49
+
+    (3) classVarDecs -> FIELD type varName commaVarNames SEMICOLON . classVarDecs
+    (2) classVarDecs -> . STATIC type varName commaVarNames SEMICOLON classVarDecs
+    (3) classVarDecs -> . FIELD type varName commaVarNames SEMICOLON classVarDecs
+    (4) classVarDecs -> . empty
+    (76) empty -> .
+
+    STATIC          shift and go to state 8
+    FIELD           shift and go to state 7
+    CONSTRUCTOR     reduce using rule 76 (empty -> .)
+    FUNCTION        reduce using rule 76 (empty -> .)
+    METHOD          reduce using rule 76 (empty -> .)
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    classVarDecs                   shift and go to state 60
+    empty                          shift and go to state 9
+
+state 50
+
+    (2) classVarDecs -> STATIC type varName commaVarNames SEMICOLON . classVarDecs
+    (2) classVarDecs -> . STATIC type varName commaVarNames SEMICOLON classVarDecs
+    (3) classVarDecs -> . FIELD type varName commaVarNames SEMICOLON classVarDecs
+    (4) classVarDecs -> . empty
+    (76) empty -> .
+
+    STATIC          shift and go to state 8
+    FIELD           shift and go to state 7
+    CONSTRUCTOR     reduce using rule 76 (empty -> .)
+    FUNCTION        reduce using rule 76 (empty -> .)
+    METHOD          reduce using rule 76 (empty -> .)
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    classVarDecs                   shift and go to state 61
+    empty                          shift and go to state 9
+
+state 51
+
+    (11) subroutineDecs -> FUNCTION VOID subroutineName LPAREN parameterList . RPAREN subroutineBody subroutineDecs
+
+    RPAREN          shift and go to state 62
+
+
+state 52
+
+    (16) parameterList -> type . varName additionalParameters
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 63
+
+state 53
+
+    (17) parameterList -> empty .
+
+    RPAREN          reduce using rule 17 (parameterList -> empty .)
+
+
+state 54
+
+    (12) subroutineDecs -> FUNCTION type subroutineName LPAREN parameterList . RPAREN subroutineBody subroutineDecs
+
+    RPAREN          shift and go to state 64
+
+
+state 55
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN parameterList . RPAREN subroutineBody subroutineDecs
+
+    RPAREN          shift and go to state 65
+
+
+state 56
+
+    (10) subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN parameterList . RPAREN subroutineBody subroutineDecs
+
+    RPAREN          shift and go to state 66
+
+
+state 57
+
+    (13) subroutineDecs -> METHOD VOID subroutineName LPAREN parameterList . RPAREN subroutineBody subroutineDecs
+
+    RPAREN          shift and go to state 67
+
+
+state 58
+
+    (14) subroutineDecs -> METHOD type subroutineName LPAREN parameterList . RPAREN subroutineBody subroutineDecs
+
+    RPAREN          shift and go to state 68
+
+
+state 59
+
+    (23) commaVarNames -> COMMA varName commaVarNames .
+
+    SEMICOLON       reduce using rule 23 (commaVarNames -> COMMA varName commaVarNames .)
+
+
+state 60
+
+    (3) classVarDecs -> FIELD type varName commaVarNames SEMICOLON classVarDecs .
+
+    CONSTRUCTOR     reduce using rule 3 (classVarDecs -> FIELD type varName commaVarNames SEMICOLON classVarDecs .)
+    FUNCTION        reduce using rule 3 (classVarDecs -> FIELD type varName commaVarNames SEMICOLON classVarDecs .)
+    METHOD          reduce using rule 3 (classVarDecs -> FIELD type varName commaVarNames SEMICOLON classVarDecs .)
+    RCURLY          reduce using rule 3 (classVarDecs -> FIELD type varName commaVarNames SEMICOLON classVarDecs .)
+
+
+state 61
+
+    (2) classVarDecs -> STATIC type varName commaVarNames SEMICOLON classVarDecs .
+
+    CONSTRUCTOR     reduce using rule 2 (classVarDecs -> STATIC type varName commaVarNames SEMICOLON classVarDecs .)
+    FUNCTION        reduce using rule 2 (classVarDecs -> STATIC type varName commaVarNames SEMICOLON classVarDecs .)
+    METHOD          reduce using rule 2 (classVarDecs -> STATIC type varName commaVarNames SEMICOLON classVarDecs .)
+    RCURLY          reduce using rule 2 (classVarDecs -> STATIC type varName commaVarNames SEMICOLON classVarDecs .)
+
+
+state 62
+
+    (11) subroutineDecs -> FUNCTION VOID subroutineName LPAREN parameterList RPAREN . subroutineBody subroutineDecs
+    (20) subroutineBody -> . LCURLY varDecs statements RCURLY
+
+    LCURLY          shift and go to state 69
+
+    subroutineBody                 shift and go to state 70
+
+state 63
+
+    (16) parameterList -> type varName . additionalParameters
+    (18) additionalParameters -> . COMMA type varName additionalParameters
+    (19) additionalParameters -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 71
+    RPAREN          reduce using rule 76 (empty -> .)
+
+    empty                          shift and go to state 72
+    additionalParameters           shift and go to state 73
+
+state 64
+
+    (12) subroutineDecs -> FUNCTION type subroutineName LPAREN parameterList RPAREN . subroutineBody subroutineDecs
+    (20) subroutineBody -> . LCURLY varDecs statements RCURLY
+
+    LCURLY          shift and go to state 69
+
+    subroutineBody                 shift and go to state 74
+
+state 65
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN . subroutineBody subroutineDecs
+    (20) subroutineBody -> . LCURLY varDecs statements RCURLY
+
+    LCURLY          shift and go to state 69
+
+    subroutineBody                 shift and go to state 75
+
+state 66
+
+    (10) subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN . subroutineBody subroutineDecs
+    (20) subroutineBody -> . LCURLY varDecs statements RCURLY
+
+    LCURLY          shift and go to state 69
+
+    subroutineBody                 shift and go to state 76
+
+state 67
+
+    (13) subroutineDecs -> METHOD VOID subroutineName LPAREN parameterList RPAREN . subroutineBody subroutineDecs
+    (20) subroutineBody -> . LCURLY varDecs statements RCURLY
+
+    LCURLY          shift and go to state 69
+
+    subroutineBody                 shift and go to state 77
+
+state 68
+
+    (14) subroutineDecs -> METHOD type subroutineName LPAREN parameterList RPAREN . subroutineBody subroutineDecs
+    (20) subroutineBody -> . LCURLY varDecs statements RCURLY
+
+    LCURLY          shift and go to state 69
+
+    subroutineBody                 shift and go to state 78
+
+state 69
+
+    (20) subroutineBody -> LCURLY . varDecs statements RCURLY
+    (21) varDecs -> . VAR type varName commaVarNames SEMICOLON varDecs
+    (22) varDecs -> . empty
+    (76) empty -> .
+
+    VAR             shift and go to state 80
+    LET             reduce using rule 76 (empty -> .)
+    IF              reduce using rule 76 (empty -> .)
+    WHILE           reduce using rule 76 (empty -> .)
+    DO              reduce using rule 76 (empty -> .)
+    RETURN          reduce using rule 76 (empty -> .)
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    varDecs                        shift and go to state 79
+    empty                          shift and go to state 81
+
+state 70
+
+    (11) subroutineDecs -> FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody . subroutineDecs
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 82
+    empty                          shift and go to state 14
+
+state 71
+
+    (18) additionalParameters -> COMMA . type varName additionalParameters
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 83
+
+state 72
+
+    (19) additionalParameters -> empty .
+
+    RPAREN          reduce using rule 19 (additionalParameters -> empty .)
+
+
+state 73
+
+    (16) parameterList -> type varName additionalParameters .
+
+    RPAREN          reduce using rule 16 (parameterList -> type varName additionalParameters .)
+
+
+state 74
+
+    (12) subroutineDecs -> FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody . subroutineDecs
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 84
+    empty                          shift and go to state 14
+
+state 75
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody . subroutineDecs
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 85
+    empty                          shift and go to state 14
+
+state 76
+
+    (10) subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody . subroutineDecs
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 86
+    empty                          shift and go to state 14
+
+state 77
+
+    (13) subroutineDecs -> METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody . subroutineDecs
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 87
+    empty                          shift and go to state 14
+
+state 78
+
+    (14) subroutineDecs -> METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody . subroutineDecs
+    (9) subroutineDecs -> . CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (10) subroutineDecs -> . CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (11) subroutineDecs -> . FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (12) subroutineDecs -> . FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (13) subroutineDecs -> . METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (14) subroutineDecs -> . METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
+    (15) subroutineDecs -> . empty
+    (76) empty -> .
+
+    CONSTRUCTOR     shift and go to state 11
+    FUNCTION        shift and go to state 10
+    METHOD          shift and go to state 12
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    subroutineDecs                 shift and go to state 88
+    empty                          shift and go to state 14
+
+state 79
+
+    (20) subroutineBody -> LCURLY varDecs . statements RCURLY
+    (28) statements -> . statement statements
+    (29) statements -> . empty
+    (30) statement -> . letStatement
+    (31) statement -> . ifStatement
+    (32) statement -> . whileStatement
+    (33) statement -> . doStatement
+    (34) statement -> . returnStatement
+    (76) empty -> .
+    (35) letStatement -> . LET varName EQ expression SEMICOLON
+    (36) letStatement -> . LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+    (37) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+    (39) whileStatement -> . WHILE LPAREN expression RPAREN LCURLY statements RCURLY
+    (40) doStatement -> . DO subroutineCall SEMICOLON
+    (41) returnStatement -> . RETURN SEMICOLON
+    (42) returnStatement -> . RETURN expression SEMICOLON
+
+    RCURLY          reduce using rule 76 (empty -> .)
+    LET             shift and go to state 101
+    IF              shift and go to state 99
+    WHILE           shift and go to state 91
+    DO              shift and go to state 89
+    RETURN          shift and go to state 92
+
+    statements                     shift and go to state 90
+    doStatement                    shift and go to state 93
+    whileStatement                 shift and go to state 97
+    letStatement                   shift and go to state 100
+    statement                      shift and go to state 94
+    returnStatement                shift and go to state 98
+    empty                          shift and go to state 96
+    ifStatement                    shift and go to state 95
+
+state 80
+
+    (21) varDecs -> VAR . type varName commaVarNames SEMICOLON varDecs
+    (5) type -> . INT
+    (6) type -> . CHAR
+    (7) type -> . BOOLEAN
+    (8) type -> . className
+    (25) className -> . IDENTIFIER
+
+    INT             shift and go to state 16
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 17
+    IDENTIFIER      shift and go to state 4
+
+    className                      shift and go to state 18
+    type                           shift and go to state 102
+
+state 81
+
+    (22) varDecs -> empty .
+
+    LET             reduce using rule 22 (varDecs -> empty .)
+    IF              reduce using rule 22 (varDecs -> empty .)
+    WHILE           reduce using rule 22 (varDecs -> empty .)
+    DO              reduce using rule 22 (varDecs -> empty .)
+    RETURN          reduce using rule 22 (varDecs -> empty .)
+    RCURLY          reduce using rule 22 (varDecs -> empty .)
+
+
+state 82
+
+    (11) subroutineDecs -> FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .
+
+    RCURLY          reduce using rule 11 (subroutineDecs -> FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .)
+
+
+state 83
+
+    (18) additionalParameters -> COMMA type . varName additionalParameters
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 103
+
+state 84
+
+    (12) subroutineDecs -> FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .
+
+    RCURLY          reduce using rule 12 (subroutineDecs -> FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .)
+
+
+state 85
+
+    (9) subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .
+
+    RCURLY          reduce using rule 9 (subroutineDecs -> CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .)
+
+
+state 86
+
+    (10) subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .
+
+    RCURLY          reduce using rule 10 (subroutineDecs -> CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .)
+
+
+state 87
+
+    (13) subroutineDecs -> METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .
+
+    RCURLY          reduce using rule 13 (subroutineDecs -> METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .)
+
+
+state 88
+
+    (14) subroutineDecs -> METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .
+
+    RCURLY          reduce using rule 14 (subroutineDecs -> METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs .)
+
+
+state 89
+
+    (40) doStatement -> DO . subroutineCall SEMICOLON
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 108
+
+    className                      shift and go to state 106
+    subroutineCall                 shift and go to state 104
+    subroutineName                 shift and go to state 107
+    varName                        shift and go to state 105
+
+state 90
+
+    (20) subroutineBody -> LCURLY varDecs statements . RCURLY
+
+    RCURLY          shift and go to state 109
+
+
+state 91
+
+    (39) whileStatement -> WHILE . LPAREN expression RPAREN LCURLY statements RCURLY
+
+    LPAREN          shift and go to state 110
+
+
+state 92
+
+    (41) returnStatement -> RETURN . SEMICOLON
+    (42) returnStatement -> RETURN . expression SEMICOLON
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    SEMICOLON       shift and go to state 120
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 127
+
+state 93
+
+    (33) statement -> doStatement .
+
+    LET             reduce using rule 33 (statement -> doStatement .)
+    IF              reduce using rule 33 (statement -> doStatement .)
+    WHILE           reduce using rule 33 (statement -> doStatement .)
+    DO              reduce using rule 33 (statement -> doStatement .)
+    RETURN          reduce using rule 33 (statement -> doStatement .)
+    RCURLY          reduce using rule 33 (statement -> doStatement .)
+
+
+state 94
+
+    (28) statements -> statement . statements
+    (28) statements -> . statement statements
+    (29) statements -> . empty
+    (30) statement -> . letStatement
+    (31) statement -> . ifStatement
+    (32) statement -> . whileStatement
+    (33) statement -> . doStatement
+    (34) statement -> . returnStatement
+    (76) empty -> .
+    (35) letStatement -> . LET varName EQ expression SEMICOLON
+    (36) letStatement -> . LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+    (37) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+    (39) whileStatement -> . WHILE LPAREN expression RPAREN LCURLY statements RCURLY
+    (40) doStatement -> . DO subroutineCall SEMICOLON
+    (41) returnStatement -> . RETURN SEMICOLON
+    (42) returnStatement -> . RETURN expression SEMICOLON
+
+    RCURLY          reduce using rule 76 (empty -> .)
+    LET             shift and go to state 101
+    IF              shift and go to state 99
+    WHILE           shift and go to state 91
+    DO              shift and go to state 89
+    RETURN          shift and go to state 92
+
+    statements                     shift and go to state 128
+    doStatement                    shift and go to state 93
+    whileStatement                 shift and go to state 97
+    letStatement                   shift and go to state 100
+    statement                      shift and go to state 94
+    returnStatement                shift and go to state 98
+    empty                          shift and go to state 96
+    ifStatement                    shift and go to state 95
+
+state 95
+
+    (31) statement -> ifStatement .
+
+    LET             reduce using rule 31 (statement -> ifStatement .)
+    IF              reduce using rule 31 (statement -> ifStatement .)
+    WHILE           reduce using rule 31 (statement -> ifStatement .)
+    DO              reduce using rule 31 (statement -> ifStatement .)
+    RETURN          reduce using rule 31 (statement -> ifStatement .)
+    RCURLY          reduce using rule 31 (statement -> ifStatement .)
+
+
+state 96
+
+    (29) statements -> empty .
+
+    RCURLY          reduce using rule 29 (statements -> empty .)
+
+
+state 97
+
+    (32) statement -> whileStatement .
+
+    LET             reduce using rule 32 (statement -> whileStatement .)
+    IF              reduce using rule 32 (statement -> whileStatement .)
+    WHILE           reduce using rule 32 (statement -> whileStatement .)
+    DO              reduce using rule 32 (statement -> whileStatement .)
+    RETURN          reduce using rule 32 (statement -> whileStatement .)
+    RCURLY          reduce using rule 32 (statement -> whileStatement .)
+
+
+state 98
+
+    (34) statement -> returnStatement .
+
+    LET             reduce using rule 34 (statement -> returnStatement .)
+    IF              reduce using rule 34 (statement -> returnStatement .)
+    WHILE           reduce using rule 34 (statement -> returnStatement .)
+    DO              reduce using rule 34 (statement -> returnStatement .)
+    RETURN          reduce using rule 34 (statement -> returnStatement .)
+    RCURLY          reduce using rule 34 (statement -> returnStatement .)
+
+
+state 99
+
+    (37) ifStatement -> IF . LPAREN expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> IF . LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+
+    LPAREN          shift and go to state 129
+
+
+state 100
+
+    (30) statement -> letStatement .
+
+    LET             reduce using rule 30 (statement -> letStatement .)
+    IF              reduce using rule 30 (statement -> letStatement .)
+    WHILE           reduce using rule 30 (statement -> letStatement .)
+    DO              reduce using rule 30 (statement -> letStatement .)
+    RETURN          reduce using rule 30 (statement -> letStatement .)
+    RCURLY          reduce using rule 30 (statement -> letStatement .)
+
+
+state 101
+
+    (35) letStatement -> LET . varName EQ expression SEMICOLON
+    (36) letStatement -> LET . varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 130
+
+state 102
+
+    (21) varDecs -> VAR type . varName commaVarNames SEMICOLON varDecs
+    (27) varName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 29
+
+    varName                        shift and go to state 131
+
+state 103
+
+    (18) additionalParameters -> COMMA type varName . additionalParameters
+    (18) additionalParameters -> . COMMA type varName additionalParameters
+    (19) additionalParameters -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 71
+    RPAREN          reduce using rule 76 (empty -> .)
+
+    empty                          shift and go to state 72
+    additionalParameters           shift and go to state 132
+
+state 104
+
+    (40) doStatement -> DO subroutineCall . SEMICOLON
+
+    SEMICOLON       shift and go to state 133
+
+
+state 105
+
+    (56) subroutineCall -> varName . DOT subroutineName LPAREN expressionList RPAREN
+
+    DOT             shift and go to state 134
+
+
+state 106
+
+    (55) subroutineCall -> className . DOT subroutineName LPAREN expressionList RPAREN
+
+    DOT             shift and go to state 135
+
+
+state 107
+
+    (54) subroutineCall -> subroutineName . LPAREN expressionList RPAREN
+
+    LPAREN          shift and go to state 136
+
+
+state 108
+
+    (26) subroutineName -> IDENTIFIER .
+    (25) className -> IDENTIFIER .
+    (27) varName -> IDENTIFIER .
+
+  ! reduce/reduce conflict for DOT resolved using rule 25 (className -> IDENTIFIER .)
+    LPAREN          reduce using rule 26 (subroutineName -> IDENTIFIER .)
+    DOT             reduce using rule 25 (className -> IDENTIFIER .)
+
+  ! DOT             [ reduce using rule 27 (varName -> IDENTIFIER .) ]
+
+
+state 109
+
+    (20) subroutineBody -> LCURLY varDecs statements RCURLY .
+
+    CONSTRUCTOR     reduce using rule 20 (subroutineBody -> LCURLY varDecs statements RCURLY .)
+    FUNCTION        reduce using rule 20 (subroutineBody -> LCURLY varDecs statements RCURLY .)
+    METHOD          reduce using rule 20 (subroutineBody -> LCURLY varDecs statements RCURLY .)
+    RCURLY          reduce using rule 20 (subroutineBody -> LCURLY varDecs statements RCURLY .)
+
+
+state 110
+
+    (39) whileStatement -> WHILE LPAREN . expression RPAREN LCURLY statements RCURLY
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineCall                 shift and go to state 119
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 137
+
+state 111
+
+    (47) term -> LPAREN . expression RPAREN
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 138
+
+state 112
+
+    (50) term -> varName .
+    (51) term -> varName . LSQUARE expression RSQUARE
+    (56) subroutineCall -> varName . DOT subroutineName LPAREN expressionList RPAREN
+
+    PLUS            reduce using rule 50 (term -> varName .)
+    MINUS           reduce using rule 50 (term -> varName .)
+    TIMES           reduce using rule 50 (term -> varName .)
+    DIVIDE          reduce using rule 50 (term -> varName .)
+    AMP             reduce using rule 50 (term -> varName .)
+    PIPE            reduce using rule 50 (term -> varName .)
+    LT              reduce using rule 50 (term -> varName .)
+    GT              reduce using rule 50 (term -> varName .)
+    EQ              reduce using rule 50 (term -> varName .)
+    RPAREN          reduce using rule 50 (term -> varName .)
+    RSQUARE         reduce using rule 50 (term -> varName .)
+    COMMA           reduce using rule 50 (term -> varName .)
+    SEMICOLON       reduce using rule 50 (term -> varName .)
+    LSQUARE         shift and go to state 139
+    DOT             shift and go to state 134
+
+
+state 113
+
+    (49) term -> keywordConstant .
+
+    PLUS            reduce using rule 49 (term -> keywordConstant .)
+    MINUS           reduce using rule 49 (term -> keywordConstant .)
+    TIMES           reduce using rule 49 (term -> keywordConstant .)
+    DIVIDE          reduce using rule 49 (term -> keywordConstant .)
+    AMP             reduce using rule 49 (term -> keywordConstant .)
+    PIPE            reduce using rule 49 (term -> keywordConstant .)
+    LT              reduce using rule 49 (term -> keywordConstant .)
+    GT              reduce using rule 49 (term -> keywordConstant .)
+    EQ              reduce using rule 49 (term -> keywordConstant .)
+    RPAREN          reduce using rule 49 (term -> keywordConstant .)
+    RSQUARE         reduce using rule 49 (term -> keywordConstant .)
+    COMMA           reduce using rule 49 (term -> keywordConstant .)
+    SEMICOLON       reduce using rule 49 (term -> keywordConstant .)
+
+
+state 114
+
+    (74) keywordConstant -> NULL .
+
+    PLUS            reduce using rule 74 (keywordConstant -> NULL .)
+    MINUS           reduce using rule 74 (keywordConstant -> NULL .)
+    TIMES           reduce using rule 74 (keywordConstant -> NULL .)
+    DIVIDE          reduce using rule 74 (keywordConstant -> NULL .)
+    AMP             reduce using rule 74 (keywordConstant -> NULL .)
+    PIPE            reduce using rule 74 (keywordConstant -> NULL .)
+    LT              reduce using rule 74 (keywordConstant -> NULL .)
+    GT              reduce using rule 74 (keywordConstant -> NULL .)
+    EQ              reduce using rule 74 (keywordConstant -> NULL .)
+    COMMA           reduce using rule 74 (keywordConstant -> NULL .)
+    RPAREN          reduce using rule 74 (keywordConstant -> NULL .)
+    SEMICOLON       reduce using rule 74 (keywordConstant -> NULL .)
+    RSQUARE         reduce using rule 74 (keywordConstant -> NULL .)
+
+
+state 115
+
+    (72) keywordConstant -> TRUE .
+
+    PLUS            reduce using rule 72 (keywordConstant -> TRUE .)
+    MINUS           reduce using rule 72 (keywordConstant -> TRUE .)
+    TIMES           reduce using rule 72 (keywordConstant -> TRUE .)
+    DIVIDE          reduce using rule 72 (keywordConstant -> TRUE .)
+    AMP             reduce using rule 72 (keywordConstant -> TRUE .)
+    PIPE            reduce using rule 72 (keywordConstant -> TRUE .)
+    LT              reduce using rule 72 (keywordConstant -> TRUE .)
+    GT              reduce using rule 72 (keywordConstant -> TRUE .)
+    EQ              reduce using rule 72 (keywordConstant -> TRUE .)
+    COMMA           reduce using rule 72 (keywordConstant -> TRUE .)
+    RPAREN          reduce using rule 72 (keywordConstant -> TRUE .)
+    SEMICOLON       reduce using rule 72 (keywordConstant -> TRUE .)
+    RSQUARE         reduce using rule 72 (keywordConstant -> TRUE .)
+
+
+state 116
+
+    (70) unaryOp -> MINUS .
+
+    INT_CONST       reduce using rule 70 (unaryOp -> MINUS .)
+    LPAREN          reduce using rule 70 (unaryOp -> MINUS .)
+    STRING_CONST    reduce using rule 70 (unaryOp -> MINUS .)
+    TRUE            reduce using rule 70 (unaryOp -> MINUS .)
+    FALSE           reduce using rule 70 (unaryOp -> MINUS .)
+    NULL            reduce using rule 70 (unaryOp -> MINUS .)
+    THIS            reduce using rule 70 (unaryOp -> MINUS .)
+    IDENTIFIER      reduce using rule 70 (unaryOp -> MINUS .)
+    MINUS           reduce using rule 70 (unaryOp -> MINUS .)
+    TILDE           reduce using rule 70 (unaryOp -> MINUS .)
+
+
+state 117
+
+    (48) term -> STRING_CONST .
+
+    PLUS            reduce using rule 48 (term -> STRING_CONST .)
+    MINUS           reduce using rule 48 (term -> STRING_CONST .)
+    TIMES           reduce using rule 48 (term -> STRING_CONST .)
+    DIVIDE          reduce using rule 48 (term -> STRING_CONST .)
+    AMP             reduce using rule 48 (term -> STRING_CONST .)
+    PIPE            reduce using rule 48 (term -> STRING_CONST .)
+    LT              reduce using rule 48 (term -> STRING_CONST .)
+    GT              reduce using rule 48 (term -> STRING_CONST .)
+    EQ              reduce using rule 48 (term -> STRING_CONST .)
+    RPAREN          reduce using rule 48 (term -> STRING_CONST .)
+    RSQUARE         reduce using rule 48 (term -> STRING_CONST .)
+    COMMA           reduce using rule 48 (term -> STRING_CONST .)
+    SEMICOLON       reduce using rule 48 (term -> STRING_CONST .)
+
+
+state 118
+
+    (46) term -> INT_CONST .
+
+    PLUS            reduce using rule 46 (term -> INT_CONST .)
+    MINUS           reduce using rule 46 (term -> INT_CONST .)
+    TIMES           reduce using rule 46 (term -> INT_CONST .)
+    DIVIDE          reduce using rule 46 (term -> INT_CONST .)
+    AMP             reduce using rule 46 (term -> INT_CONST .)
+    PIPE            reduce using rule 46 (term -> INT_CONST .)
+    LT              reduce using rule 46 (term -> INT_CONST .)
+    GT              reduce using rule 46 (term -> INT_CONST .)
+    EQ              reduce using rule 46 (term -> INT_CONST .)
+    RPAREN          reduce using rule 46 (term -> INT_CONST .)
+    RSQUARE         reduce using rule 46 (term -> INT_CONST .)
+    COMMA           reduce using rule 46 (term -> INT_CONST .)
+    SEMICOLON       reduce using rule 46 (term -> INT_CONST .)
+
+
+state 119
+
+    (52) term -> subroutineCall .
+
+    PLUS            reduce using rule 52 (term -> subroutineCall .)
+    MINUS           reduce using rule 52 (term -> subroutineCall .)
+    TIMES           reduce using rule 52 (term -> subroutineCall .)
+    DIVIDE          reduce using rule 52 (term -> subroutineCall .)
+    AMP             reduce using rule 52 (term -> subroutineCall .)
+    PIPE            reduce using rule 52 (term -> subroutineCall .)
+    LT              reduce using rule 52 (term -> subroutineCall .)
+    GT              reduce using rule 52 (term -> subroutineCall .)
+    EQ              reduce using rule 52 (term -> subroutineCall .)
+    RPAREN          reduce using rule 52 (term -> subroutineCall .)
+    RSQUARE         reduce using rule 52 (term -> subroutineCall .)
+    COMMA           reduce using rule 52 (term -> subroutineCall .)
+    SEMICOLON       reduce using rule 52 (term -> subroutineCall .)
+
+
+state 120
+
+    (41) returnStatement -> RETURN SEMICOLON .
+
+    LET             reduce using rule 41 (returnStatement -> RETURN SEMICOLON .)
+    IF              reduce using rule 41 (returnStatement -> RETURN SEMICOLON .)
+    WHILE           reduce using rule 41 (returnStatement -> RETURN SEMICOLON .)
+    DO              reduce using rule 41 (returnStatement -> RETURN SEMICOLON .)
+    RETURN          reduce using rule 41 (returnStatement -> RETURN SEMICOLON .)
+    RCURLY          reduce using rule 41 (returnStatement -> RETURN SEMICOLON .)
+
+
+state 121
+
+    (71) unaryOp -> TILDE .
+
+    INT_CONST       reduce using rule 71 (unaryOp -> TILDE .)
+    LPAREN          reduce using rule 71 (unaryOp -> TILDE .)
+    STRING_CONST    reduce using rule 71 (unaryOp -> TILDE .)
+    TRUE            reduce using rule 71 (unaryOp -> TILDE .)
+    FALSE           reduce using rule 71 (unaryOp -> TILDE .)
+    NULL            reduce using rule 71 (unaryOp -> TILDE .)
+    THIS            reduce using rule 71 (unaryOp -> TILDE .)
+    IDENTIFIER      reduce using rule 71 (unaryOp -> TILDE .)
+    MINUS           reduce using rule 71 (unaryOp -> TILDE .)
+    TILDE           reduce using rule 71 (unaryOp -> TILDE .)
+
+
+state 122
+
+    (27) varName -> IDENTIFIER .
+    (26) subroutineName -> IDENTIFIER .
+    (25) className -> IDENTIFIER .
+
+  ! reduce/reduce conflict for DOT resolved using rule 25 (className -> IDENTIFIER .)
+    LSQUARE         reduce using rule 27 (varName -> IDENTIFIER .)
+    PLUS            reduce using rule 27 (varName -> IDENTIFIER .)
+    MINUS           reduce using rule 27 (varName -> IDENTIFIER .)
+    TIMES           reduce using rule 27 (varName -> IDENTIFIER .)
+    DIVIDE          reduce using rule 27 (varName -> IDENTIFIER .)
+    AMP             reduce using rule 27 (varName -> IDENTIFIER .)
+    PIPE            reduce using rule 27 (varName -> IDENTIFIER .)
+    LT              reduce using rule 27 (varName -> IDENTIFIER .)
+    GT              reduce using rule 27 (varName -> IDENTIFIER .)
+    EQ              reduce using rule 27 (varName -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 27 (varName -> IDENTIFIER .)
+    RSQUARE         reduce using rule 27 (varName -> IDENTIFIER .)
+    RPAREN          reduce using rule 27 (varName -> IDENTIFIER .)
+    COMMA           reduce using rule 27 (varName -> IDENTIFIER .)
+    LPAREN          reduce using rule 26 (subroutineName -> IDENTIFIER .)
+    DOT             reduce using rule 25 (className -> IDENTIFIER .)
+
+  ! DOT             [ reduce using rule 27 (varName -> IDENTIFIER .) ]
+
+
+state 123
+
+    (43) expression -> term . opTerms
+    (44) opTerms -> . op term opTerms
+    (45) opTerms -> . empty
+    (61) op -> . PLUS
+    (62) op -> . MINUS
+    (63) op -> . TIMES
+    (64) op -> . DIVIDE
+    (65) op -> . AMP
+    (66) op -> . PIPE
+    (67) op -> . LT
+    (68) op -> . GT
+    (69) op -> . EQ
+    (76) empty -> .
+
+    PLUS            shift and go to state 145
+    MINUS           shift and go to state 149
+    TIMES           shift and go to state 142
+    DIVIDE          shift and go to state 141
+    AMP             shift and go to state 146
+    PIPE            shift and go to state 143
+    LT              shift and go to state 144
+    GT              shift and go to state 140
+    EQ              shift and go to state 148
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    RPAREN          reduce using rule 76 (empty -> .)
+    COMMA           reduce using rule 76 (empty -> .)
+    RSQUARE         reduce using rule 76 (empty -> .)
+
+    opTerms                        shift and go to state 147
+    empty                          shift and go to state 150
+    op                             shift and go to state 151
+
+state 124
+
+    (73) keywordConstant -> FALSE .
+
+    PLUS            reduce using rule 73 (keywordConstant -> FALSE .)
+    MINUS           reduce using rule 73 (keywordConstant -> FALSE .)
+    TIMES           reduce using rule 73 (keywordConstant -> FALSE .)
+    DIVIDE          reduce using rule 73 (keywordConstant -> FALSE .)
+    AMP             reduce using rule 73 (keywordConstant -> FALSE .)
+    PIPE            reduce using rule 73 (keywordConstant -> FALSE .)
+    LT              reduce using rule 73 (keywordConstant -> FALSE .)
+    GT              reduce using rule 73 (keywordConstant -> FALSE .)
+    EQ              reduce using rule 73 (keywordConstant -> FALSE .)
+    COMMA           reduce using rule 73 (keywordConstant -> FALSE .)
+    RPAREN          reduce using rule 73 (keywordConstant -> FALSE .)
+    SEMICOLON       reduce using rule 73 (keywordConstant -> FALSE .)
+    RSQUARE         reduce using rule 73 (keywordConstant -> FALSE .)
+
+
+state 125
+
+    (53) term -> unaryOp . term
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 152
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+
+state 126
+
+    (75) keywordConstant -> THIS .
+
+    PLUS            reduce using rule 75 (keywordConstant -> THIS .)
+    MINUS           reduce using rule 75 (keywordConstant -> THIS .)
+    TIMES           reduce using rule 75 (keywordConstant -> THIS .)
+    DIVIDE          reduce using rule 75 (keywordConstant -> THIS .)
+    AMP             reduce using rule 75 (keywordConstant -> THIS .)
+    PIPE            reduce using rule 75 (keywordConstant -> THIS .)
+    LT              reduce using rule 75 (keywordConstant -> THIS .)
+    GT              reduce using rule 75 (keywordConstant -> THIS .)
+    EQ              reduce using rule 75 (keywordConstant -> THIS .)
+    COMMA           reduce using rule 75 (keywordConstant -> THIS .)
+    RPAREN          reduce using rule 75 (keywordConstant -> THIS .)
+    SEMICOLON       reduce using rule 75 (keywordConstant -> THIS .)
+    RSQUARE         reduce using rule 75 (keywordConstant -> THIS .)
+
+
+state 127
+
+    (42) returnStatement -> RETURN expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 153
+
+
+state 128
+
+    (28) statements -> statement statements .
+
+    RCURLY          reduce using rule 28 (statements -> statement statements .)
+
+
+state 129
+
+    (37) ifStatement -> IF LPAREN . expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> IF LPAREN . expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineCall                 shift and go to state 119
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 154
+
+state 130
+
+    (35) letStatement -> LET varName . EQ expression SEMICOLON
+    (36) letStatement -> LET varName . LSQUARE expression RSQUARE EQ expression SEMICOLON
+
+    EQ              shift and go to state 155
+    LSQUARE         shift and go to state 156
+
+
+state 131
+
+    (21) varDecs -> VAR type varName . commaVarNames SEMICOLON varDecs
+    (23) commaVarNames -> . COMMA varName commaVarNames
+    (24) commaVarNames -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 38
+    SEMICOLON       reduce using rule 76 (empty -> .)
+
+    commaVarNames                  shift and go to state 157
+    empty                          shift and go to state 40
+
+state 132
+
+    (18) additionalParameters -> COMMA type varName additionalParameters .
+
+    RPAREN          reduce using rule 18 (additionalParameters -> COMMA type varName additionalParameters .)
+
+
+state 133
+
+    (40) doStatement -> DO subroutineCall SEMICOLON .
+
+    LET             reduce using rule 40 (doStatement -> DO subroutineCall SEMICOLON .)
+    IF              reduce using rule 40 (doStatement -> DO subroutineCall SEMICOLON .)
+    WHILE           reduce using rule 40 (doStatement -> DO subroutineCall SEMICOLON .)
+    DO              reduce using rule 40 (doStatement -> DO subroutineCall SEMICOLON .)
+    RETURN          reduce using rule 40 (doStatement -> DO subroutineCall SEMICOLON .)
+    RCURLY          reduce using rule 40 (doStatement -> DO subroutineCall SEMICOLON .)
+
+
+state 134
+
+    (56) subroutineCall -> varName DOT . subroutineName LPAREN expressionList RPAREN
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 158
+
+state 135
+
+    (55) subroutineCall -> className DOT . subroutineName LPAREN expressionList RPAREN
+    (26) subroutineName -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 32
+
+    subroutineName                 shift and go to state 159
+
+state 136
+
+    (54) subroutineCall -> subroutineName LPAREN . expressionList RPAREN
+    (57) expressionList -> . expression commaExpressions
+    (58) expressionList -> . empty
+    (43) expression -> . term opTerms
+    (76) empty -> .
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    RPAREN          reduce using rule 76 (empty -> .)
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    expressionList                 shift and go to state 160
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 162
+    empty                          shift and go to state 161
+
+state 137
+
+    (39) whileStatement -> WHILE LPAREN expression . RPAREN LCURLY statements RCURLY
+
+    RPAREN          shift and go to state 163
+
+
+state 138
+
+    (47) term -> LPAREN expression . RPAREN
+
+    RPAREN          shift and go to state 164
+
+
+state 139
+
+    (51) term -> varName LSQUARE . expression RSQUARE
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 165
+
+state 140
+
+    (68) op -> GT .
+
+    INT_CONST       reduce using rule 68 (op -> GT .)
+    LPAREN          reduce using rule 68 (op -> GT .)
+    STRING_CONST    reduce using rule 68 (op -> GT .)
+    TRUE            reduce using rule 68 (op -> GT .)
+    FALSE           reduce using rule 68 (op -> GT .)
+    NULL            reduce using rule 68 (op -> GT .)
+    THIS            reduce using rule 68 (op -> GT .)
+    IDENTIFIER      reduce using rule 68 (op -> GT .)
+    MINUS           reduce using rule 68 (op -> GT .)
+    TILDE           reduce using rule 68 (op -> GT .)
+
+
+state 141
+
+    (64) op -> DIVIDE .
+
+    INT_CONST       reduce using rule 64 (op -> DIVIDE .)
+    LPAREN          reduce using rule 64 (op -> DIVIDE .)
+    STRING_CONST    reduce using rule 64 (op -> DIVIDE .)
+    TRUE            reduce using rule 64 (op -> DIVIDE .)
+    FALSE           reduce using rule 64 (op -> DIVIDE .)
+    NULL            reduce using rule 64 (op -> DIVIDE .)
+    THIS            reduce using rule 64 (op -> DIVIDE .)
+    IDENTIFIER      reduce using rule 64 (op -> DIVIDE .)
+    MINUS           reduce using rule 64 (op -> DIVIDE .)
+    TILDE           reduce using rule 64 (op -> DIVIDE .)
+
+
+state 142
+
+    (63) op -> TIMES .
+
+    INT_CONST       reduce using rule 63 (op -> TIMES .)
+    LPAREN          reduce using rule 63 (op -> TIMES .)
+    STRING_CONST    reduce using rule 63 (op -> TIMES .)
+    TRUE            reduce using rule 63 (op -> TIMES .)
+    FALSE           reduce using rule 63 (op -> TIMES .)
+    NULL            reduce using rule 63 (op -> TIMES .)
+    THIS            reduce using rule 63 (op -> TIMES .)
+    IDENTIFIER      reduce using rule 63 (op -> TIMES .)
+    MINUS           reduce using rule 63 (op -> TIMES .)
+    TILDE           reduce using rule 63 (op -> TIMES .)
+
+
+state 143
+
+    (66) op -> PIPE .
+
+    INT_CONST       reduce using rule 66 (op -> PIPE .)
+    LPAREN          reduce using rule 66 (op -> PIPE .)
+    STRING_CONST    reduce using rule 66 (op -> PIPE .)
+    TRUE            reduce using rule 66 (op -> PIPE .)
+    FALSE           reduce using rule 66 (op -> PIPE .)
+    NULL            reduce using rule 66 (op -> PIPE .)
+    THIS            reduce using rule 66 (op -> PIPE .)
+    IDENTIFIER      reduce using rule 66 (op -> PIPE .)
+    MINUS           reduce using rule 66 (op -> PIPE .)
+    TILDE           reduce using rule 66 (op -> PIPE .)
+
+
+state 144
+
+    (67) op -> LT .
+
+    INT_CONST       reduce using rule 67 (op -> LT .)
+    LPAREN          reduce using rule 67 (op -> LT .)
+    STRING_CONST    reduce using rule 67 (op -> LT .)
+    TRUE            reduce using rule 67 (op -> LT .)
+    FALSE           reduce using rule 67 (op -> LT .)
+    NULL            reduce using rule 67 (op -> LT .)
+    THIS            reduce using rule 67 (op -> LT .)
+    IDENTIFIER      reduce using rule 67 (op -> LT .)
+    MINUS           reduce using rule 67 (op -> LT .)
+    TILDE           reduce using rule 67 (op -> LT .)
+
+
+state 145
+
+    (61) op -> PLUS .
+
+    INT_CONST       reduce using rule 61 (op -> PLUS .)
+    LPAREN          reduce using rule 61 (op -> PLUS .)
+    STRING_CONST    reduce using rule 61 (op -> PLUS .)
+    TRUE            reduce using rule 61 (op -> PLUS .)
+    FALSE           reduce using rule 61 (op -> PLUS .)
+    NULL            reduce using rule 61 (op -> PLUS .)
+    THIS            reduce using rule 61 (op -> PLUS .)
+    IDENTIFIER      reduce using rule 61 (op -> PLUS .)
+    MINUS           reduce using rule 61 (op -> PLUS .)
+    TILDE           reduce using rule 61 (op -> PLUS .)
+
+
+state 146
+
+    (65) op -> AMP .
+
+    INT_CONST       reduce using rule 65 (op -> AMP .)
+    LPAREN          reduce using rule 65 (op -> AMP .)
+    STRING_CONST    reduce using rule 65 (op -> AMP .)
+    TRUE            reduce using rule 65 (op -> AMP .)
+    FALSE           reduce using rule 65 (op -> AMP .)
+    NULL            reduce using rule 65 (op -> AMP .)
+    THIS            reduce using rule 65 (op -> AMP .)
+    IDENTIFIER      reduce using rule 65 (op -> AMP .)
+    MINUS           reduce using rule 65 (op -> AMP .)
+    TILDE           reduce using rule 65 (op -> AMP .)
+
+
+state 147
+
+    (43) expression -> term opTerms .
+
+    RPAREN          reduce using rule 43 (expression -> term opTerms .)
+    RSQUARE         reduce using rule 43 (expression -> term opTerms .)
+    SEMICOLON       reduce using rule 43 (expression -> term opTerms .)
+    COMMA           reduce using rule 43 (expression -> term opTerms .)
+
+
+state 148
+
+    (69) op -> EQ .
+
+    INT_CONST       reduce using rule 69 (op -> EQ .)
+    LPAREN          reduce using rule 69 (op -> EQ .)
+    STRING_CONST    reduce using rule 69 (op -> EQ .)
+    TRUE            reduce using rule 69 (op -> EQ .)
+    FALSE           reduce using rule 69 (op -> EQ .)
+    NULL            reduce using rule 69 (op -> EQ .)
+    THIS            reduce using rule 69 (op -> EQ .)
+    IDENTIFIER      reduce using rule 69 (op -> EQ .)
+    MINUS           reduce using rule 69 (op -> EQ .)
+    TILDE           reduce using rule 69 (op -> EQ .)
+
+
+state 149
+
+    (62) op -> MINUS .
+
+    INT_CONST       reduce using rule 62 (op -> MINUS .)
+    LPAREN          reduce using rule 62 (op -> MINUS .)
+    STRING_CONST    reduce using rule 62 (op -> MINUS .)
+    TRUE            reduce using rule 62 (op -> MINUS .)
+    FALSE           reduce using rule 62 (op -> MINUS .)
+    NULL            reduce using rule 62 (op -> MINUS .)
+    THIS            reduce using rule 62 (op -> MINUS .)
+    IDENTIFIER      reduce using rule 62 (op -> MINUS .)
+    MINUS           reduce using rule 62 (op -> MINUS .)
+    TILDE           reduce using rule 62 (op -> MINUS .)
+
+
+state 150
+
+    (45) opTerms -> empty .
+
+    SEMICOLON       reduce using rule 45 (opTerms -> empty .)
+    RPAREN          reduce using rule 45 (opTerms -> empty .)
+    COMMA           reduce using rule 45 (opTerms -> empty .)
+    RSQUARE         reduce using rule 45 (opTerms -> empty .)
+
+
+state 151
+
+    (44) opTerms -> op . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 166
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+
+state 152
+
+    (53) term -> unaryOp term .
+
+    PLUS            reduce using rule 53 (term -> unaryOp term .)
+    MINUS           reduce using rule 53 (term -> unaryOp term .)
+    TIMES           reduce using rule 53 (term -> unaryOp term .)
+    DIVIDE          reduce using rule 53 (term -> unaryOp term .)
+    AMP             reduce using rule 53 (term -> unaryOp term .)
+    PIPE            reduce using rule 53 (term -> unaryOp term .)
+    LT              reduce using rule 53 (term -> unaryOp term .)
+    GT              reduce using rule 53 (term -> unaryOp term .)
+    EQ              reduce using rule 53 (term -> unaryOp term .)
+    RPAREN          reduce using rule 53 (term -> unaryOp term .)
+    RSQUARE         reduce using rule 53 (term -> unaryOp term .)
+    COMMA           reduce using rule 53 (term -> unaryOp term .)
+    SEMICOLON       reduce using rule 53 (term -> unaryOp term .)
+
+
+state 153
+
+    (42) returnStatement -> RETURN expression SEMICOLON .
+
+    LET             reduce using rule 42 (returnStatement -> RETURN expression SEMICOLON .)
+    IF              reduce using rule 42 (returnStatement -> RETURN expression SEMICOLON .)
+    WHILE           reduce using rule 42 (returnStatement -> RETURN expression SEMICOLON .)
+    DO              reduce using rule 42 (returnStatement -> RETURN expression SEMICOLON .)
+    RETURN          reduce using rule 42 (returnStatement -> RETURN expression SEMICOLON .)
+    RCURLY          reduce using rule 42 (returnStatement -> RETURN expression SEMICOLON .)
+
+
+state 154
+
+    (37) ifStatement -> IF LPAREN expression . RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> IF LPAREN expression . RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+
+    RPAREN          shift and go to state 167
+
+
+state 155
+
+    (35) letStatement -> LET varName EQ . expression SEMICOLON
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 168
+
+state 156
+
+    (36) letStatement -> LET varName LSQUARE . expression RSQUARE EQ expression SEMICOLON
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 169
+
+state 157
+
+    (21) varDecs -> VAR type varName commaVarNames . SEMICOLON varDecs
+
+    SEMICOLON       shift and go to state 170
+
+
+state 158
+
+    (56) subroutineCall -> varName DOT subroutineName . LPAREN expressionList RPAREN
+
+    LPAREN          shift and go to state 171
+
+
+state 159
+
+    (55) subroutineCall -> className DOT subroutineName . LPAREN expressionList RPAREN
+
+    LPAREN          shift and go to state 172
+
+
+state 160
+
+    (54) subroutineCall -> subroutineName LPAREN expressionList . RPAREN
+
+    RPAREN          shift and go to state 173
+
+
+state 161
+
+    (58) expressionList -> empty .
+
+    RPAREN          reduce using rule 58 (expressionList -> empty .)
+
+
+state 162
+
+    (57) expressionList -> expression . commaExpressions
+    (59) commaExpressions -> . COMMA expression commaExpressions
+    (60) commaExpressions -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 174
+    RPAREN          reduce using rule 76 (empty -> .)
+
+    empty                          shift and go to state 175
+    commaExpressions               shift and go to state 176
+
+state 163
+
+    (39) whileStatement -> WHILE LPAREN expression RPAREN . LCURLY statements RCURLY
+
+    LCURLY          shift and go to state 177
+
+
+state 164
+
+    (47) term -> LPAREN expression RPAREN .
+
+    PLUS            reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    AMP             reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    PIPE            reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    LT              reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    GT              reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    EQ              reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    RSQUARE         reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    COMMA           reduce using rule 47 (term -> LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 47 (term -> LPAREN expression RPAREN .)
+
+
+state 165
+
+    (51) term -> varName LSQUARE expression . RSQUARE
+
+    RSQUARE         shift and go to state 178
+
+
+state 166
+
+    (44) opTerms -> op term . opTerms
+    (44) opTerms -> . op term opTerms
+    (45) opTerms -> . empty
+    (61) op -> . PLUS
+    (62) op -> . MINUS
+    (63) op -> . TIMES
+    (64) op -> . DIVIDE
+    (65) op -> . AMP
+    (66) op -> . PIPE
+    (67) op -> . LT
+    (68) op -> . GT
+    (69) op -> . EQ
+    (76) empty -> .
+
+    PLUS            shift and go to state 145
+    MINUS           shift and go to state 149
+    TIMES           shift and go to state 142
+    DIVIDE          shift and go to state 141
+    AMP             shift and go to state 146
+    PIPE            shift and go to state 143
+    LT              shift and go to state 144
+    GT              shift and go to state 140
+    EQ              shift and go to state 148
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    RPAREN          reduce using rule 76 (empty -> .)
+    COMMA           reduce using rule 76 (empty -> .)
+    RSQUARE         reduce using rule 76 (empty -> .)
+
+    opTerms                        shift and go to state 179
+    empty                          shift and go to state 150
+    op                             shift and go to state 151
+
+state 167
+
+    (37) ifStatement -> IF LPAREN expression RPAREN . LCURLY statements RCURLY
+    (38) ifStatement -> IF LPAREN expression RPAREN . LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+
+    LCURLY          shift and go to state 180
+
+
+state 168
+
+    (35) letStatement -> LET varName EQ expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 181
+
+
+state 169
+
+    (36) letStatement -> LET varName LSQUARE expression . RSQUARE EQ expression SEMICOLON
+
+    RSQUARE         shift and go to state 182
+
+
+state 170
+
+    (21) varDecs -> VAR type varName commaVarNames SEMICOLON . varDecs
+    (21) varDecs -> . VAR type varName commaVarNames SEMICOLON varDecs
+    (22) varDecs -> . empty
+    (76) empty -> .
+
+    VAR             shift and go to state 80
+    LET             reduce using rule 76 (empty -> .)
+    IF              reduce using rule 76 (empty -> .)
+    WHILE           reduce using rule 76 (empty -> .)
+    DO              reduce using rule 76 (empty -> .)
+    RETURN          reduce using rule 76 (empty -> .)
+    RCURLY          reduce using rule 76 (empty -> .)
+
+    varDecs                        shift and go to state 183
+    empty                          shift and go to state 81
+
+state 171
+
+    (56) subroutineCall -> varName DOT subroutineName LPAREN . expressionList RPAREN
+    (57) expressionList -> . expression commaExpressions
+    (58) expressionList -> . empty
+    (43) expression -> . term opTerms
+    (76) empty -> .
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    RPAREN          reduce using rule 76 (empty -> .)
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    expressionList                 shift and go to state 184
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 162
+    empty                          shift and go to state 161
+
+state 172
+
+    (55) subroutineCall -> className DOT subroutineName LPAREN . expressionList RPAREN
+    (57) expressionList -> . expression commaExpressions
+    (58) expressionList -> . empty
+    (43) expression -> . term opTerms
+    (76) empty -> .
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    RPAREN          reduce using rule 76 (empty -> .)
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    expressionList                 shift and go to state 185
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 162
+    empty                          shift and go to state 161
+
+state 173
+
+    (54) subroutineCall -> subroutineName LPAREN expressionList RPAREN .
+
+    PLUS            reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    MINUS           reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    TIMES           reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    DIVIDE          reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    AMP             reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    PIPE            reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    LT              reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    GT              reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    EQ              reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    SEMICOLON       reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    RPAREN          reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    COMMA           reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+    RSQUARE         reduce using rule 54 (subroutineCall -> subroutineName LPAREN expressionList RPAREN .)
+
+
+state 174
+
+    (59) commaExpressions -> COMMA . expression commaExpressions
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 186
+
+state 175
+
+    (60) commaExpressions -> empty .
+
+    RPAREN          reduce using rule 60 (commaExpressions -> empty .)
+
+
+state 176
+
+    (57) expressionList -> expression commaExpressions .
+
+    RPAREN          reduce using rule 57 (expressionList -> expression commaExpressions .)
+
+
+state 177
+
+    (39) whileStatement -> WHILE LPAREN expression RPAREN LCURLY . statements RCURLY
+    (28) statements -> . statement statements
+    (29) statements -> . empty
+    (30) statement -> . letStatement
+    (31) statement -> . ifStatement
+    (32) statement -> . whileStatement
+    (33) statement -> . doStatement
+    (34) statement -> . returnStatement
+    (76) empty -> .
+    (35) letStatement -> . LET varName EQ expression SEMICOLON
+    (36) letStatement -> . LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+    (37) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+    (39) whileStatement -> . WHILE LPAREN expression RPAREN LCURLY statements RCURLY
+    (40) doStatement -> . DO subroutineCall SEMICOLON
+    (41) returnStatement -> . RETURN SEMICOLON
+    (42) returnStatement -> . RETURN expression SEMICOLON
+
+    RCURLY          reduce using rule 76 (empty -> .)
+    LET             shift and go to state 101
+    IF              shift and go to state 99
+    WHILE           shift and go to state 91
+    DO              shift and go to state 89
+    RETURN          shift and go to state 92
+
+    statements                     shift and go to state 187
+    doStatement                    shift and go to state 93
+    whileStatement                 shift and go to state 97
+    letStatement                   shift and go to state 100
+    statement                      shift and go to state 94
+    returnStatement                shift and go to state 98
+    empty                          shift and go to state 96
+    ifStatement                    shift and go to state 95
+
+state 178
+
+    (51) term -> varName LSQUARE expression RSQUARE .
+
+    PLUS            reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    MINUS           reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    TIMES           reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    DIVIDE          reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    AMP             reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    PIPE            reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    LT              reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    GT              reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    EQ              reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    RPAREN          reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    RSQUARE         reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    COMMA           reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+    SEMICOLON       reduce using rule 51 (term -> varName LSQUARE expression RSQUARE .)
+
+
+state 179
+
+    (44) opTerms -> op term opTerms .
+
+    SEMICOLON       reduce using rule 44 (opTerms -> op term opTerms .)
+    RPAREN          reduce using rule 44 (opTerms -> op term opTerms .)
+    COMMA           reduce using rule 44 (opTerms -> op term opTerms .)
+    RSQUARE         reduce using rule 44 (opTerms -> op term opTerms .)
+
+
+state 180
+
+    (37) ifStatement -> IF LPAREN expression RPAREN LCURLY . statements RCURLY
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY . statements RCURLY ELSE LCURLY statements RCURLY
+    (28) statements -> . statement statements
+    (29) statements -> . empty
+    (30) statement -> . letStatement
+    (31) statement -> . ifStatement
+    (32) statement -> . whileStatement
+    (33) statement -> . doStatement
+    (34) statement -> . returnStatement
+    (76) empty -> .
+    (35) letStatement -> . LET varName EQ expression SEMICOLON
+    (36) letStatement -> . LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+    (37) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+    (39) whileStatement -> . WHILE LPAREN expression RPAREN LCURLY statements RCURLY
+    (40) doStatement -> . DO subroutineCall SEMICOLON
+    (41) returnStatement -> . RETURN SEMICOLON
+    (42) returnStatement -> . RETURN expression SEMICOLON
+
+    RCURLY          reduce using rule 76 (empty -> .)
+    LET             shift and go to state 101
+    IF              shift and go to state 99
+    WHILE           shift and go to state 91
+    DO              shift and go to state 89
+    RETURN          shift and go to state 92
+
+    statements                     shift and go to state 188
+    doStatement                    shift and go to state 93
+    whileStatement                 shift and go to state 97
+    letStatement                   shift and go to state 100
+    statement                      shift and go to state 94
+    returnStatement                shift and go to state 98
+    empty                          shift and go to state 96
+    ifStatement                    shift and go to state 95
+
+state 181
+
+    (35) letStatement -> LET varName EQ expression SEMICOLON .
+
+    LET             reduce using rule 35 (letStatement -> LET varName EQ expression SEMICOLON .)
+    IF              reduce using rule 35 (letStatement -> LET varName EQ expression SEMICOLON .)
+    WHILE           reduce using rule 35 (letStatement -> LET varName EQ expression SEMICOLON .)
+    DO              reduce using rule 35 (letStatement -> LET varName EQ expression SEMICOLON .)
+    RETURN          reduce using rule 35 (letStatement -> LET varName EQ expression SEMICOLON .)
+    RCURLY          reduce using rule 35 (letStatement -> LET varName EQ expression SEMICOLON .)
+
+
+state 182
+
+    (36) letStatement -> LET varName LSQUARE expression RSQUARE . EQ expression SEMICOLON
+
+    EQ              shift and go to state 189
+
+
+state 183
+
+    (21) varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .
+
+    LET             reduce using rule 21 (varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .)
+    IF              reduce using rule 21 (varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .)
+    WHILE           reduce using rule 21 (varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .)
+    DO              reduce using rule 21 (varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .)
+    RETURN          reduce using rule 21 (varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .)
+    RCURLY          reduce using rule 21 (varDecs -> VAR type varName commaVarNames SEMICOLON varDecs .)
+
+
+state 184
+
+    (56) subroutineCall -> varName DOT subroutineName LPAREN expressionList . RPAREN
+
+    RPAREN          shift and go to state 190
+
+
+state 185
+
+    (55) subroutineCall -> className DOT subroutineName LPAREN expressionList . RPAREN
+
+    RPAREN          shift and go to state 191
+
+
+state 186
+
+    (59) commaExpressions -> COMMA expression . commaExpressions
+    (59) commaExpressions -> . COMMA expression commaExpressions
+    (60) commaExpressions -> . empty
+    (76) empty -> .
+
+    COMMA           shift and go to state 174
+    RPAREN          reduce using rule 76 (empty -> .)
+
+    empty                          shift and go to state 175
+    commaExpressions               shift and go to state 192
+
+state 187
+
+    (39) whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements . RCURLY
+
+    RCURLY          shift and go to state 193
+
+
+state 188
+
+    (37) ifStatement -> IF LPAREN expression RPAREN LCURLY statements . RCURLY
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY statements . RCURLY ELSE LCURLY statements RCURLY
+
+    RCURLY          shift and go to state 194
+
+
+state 189
+
+    (36) letStatement -> LET varName LSQUARE expression RSQUARE EQ . expression SEMICOLON
+    (43) expression -> . term opTerms
+    (46) term -> . INT_CONST
+    (47) term -> . LPAREN expression RPAREN
+    (48) term -> . STRING_CONST
+    (49) term -> . keywordConstant
+    (50) term -> . varName
+    (51) term -> . varName LSQUARE expression RSQUARE
+    (52) term -> . subroutineCall
+    (53) term -> . unaryOp term
+    (72) keywordConstant -> . TRUE
+    (73) keywordConstant -> . FALSE
+    (74) keywordConstant -> . NULL
+    (75) keywordConstant -> . THIS
+    (27) varName -> . IDENTIFIER
+    (54) subroutineCall -> . subroutineName LPAREN expressionList RPAREN
+    (55) subroutineCall -> . className DOT subroutineName LPAREN expressionList RPAREN
+    (56) subroutineCall -> . varName DOT subroutineName LPAREN expressionList RPAREN
+    (70) unaryOp -> . MINUS
+    (71) unaryOp -> . TILDE
+    (26) subroutineName -> . IDENTIFIER
+    (25) className -> . IDENTIFIER
+
+    INT_CONST       shift and go to state 118
+    LPAREN          shift and go to state 111
+    STRING_CONST    shift and go to state 117
+    TRUE            shift and go to state 115
+    FALSE           shift and go to state 124
+    NULL            shift and go to state 114
+    THIS            shift and go to state 126
+    IDENTIFIER      shift and go to state 122
+    MINUS           shift and go to state 116
+    TILDE           shift and go to state 121
+
+    term                           shift and go to state 123
+    subroutineCall                 shift and go to state 119
+    unaryOp                        shift and go to state 125
+    varName                        shift and go to state 112
+    className                      shift and go to state 106
+    keywordConstant                shift and go to state 113
+    subroutineName                 shift and go to state 107
+    expression                     shift and go to state 195
+
+state 190
+
+    (56) subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .
+
+    PLUS            reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    MINUS           reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    TIMES           reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    DIVIDE          reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    AMP             reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    PIPE            reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    LT              reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    GT              reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    EQ              reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    SEMICOLON       reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    RPAREN          reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    COMMA           reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+    RSQUARE         reduce using rule 56 (subroutineCall -> varName DOT subroutineName LPAREN expressionList RPAREN .)
+
+
+state 191
+
+    (55) subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .
+
+    PLUS            reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    MINUS           reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    TIMES           reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    DIVIDE          reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    AMP             reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    PIPE            reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    LT              reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    GT              reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    EQ              reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    SEMICOLON       reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    RPAREN          reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    COMMA           reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+    RSQUARE         reduce using rule 55 (subroutineCall -> className DOT subroutineName LPAREN expressionList RPAREN .)
+
+
+state 192
+
+    (59) commaExpressions -> COMMA expression commaExpressions .
+
+    RPAREN          reduce using rule 59 (commaExpressions -> COMMA expression commaExpressions .)
+
+
+state 193
+
+    (39) whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .
+
+    LET             reduce using rule 39 (whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .)
+    IF              reduce using rule 39 (whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .)
+    WHILE           reduce using rule 39 (whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .)
+    DO              reduce using rule 39 (whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .)
+    RETURN          reduce using rule 39 (whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .)
+    RCURLY          reduce using rule 39 (whileStatement -> WHILE LPAREN expression RPAREN LCURLY statements RCURLY .)
+
+
+state 194
+
+    (37) ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY . ELSE LCURLY statements RCURLY
+
+    LET             reduce using rule 37 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .)
+    IF              reduce using rule 37 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .)
+    WHILE           reduce using rule 37 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .)
+    DO              reduce using rule 37 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .)
+    RETURN          reduce using rule 37 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .)
+    RCURLY          reduce using rule 37 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY .)
+    ELSE            shift and go to state 196
+
+
+state 195
+
+    (36) letStatement -> LET varName LSQUARE expression RSQUARE EQ expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 197
+
+
+state 196
+
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE . LCURLY statements RCURLY
+
+    LCURLY          shift and go to state 198
+
+
+state 197
+
+    (36) letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .
+
+    LET             reduce using rule 36 (letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .)
+    IF              reduce using rule 36 (letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .)
+    WHILE           reduce using rule 36 (letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .)
+    DO              reduce using rule 36 (letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .)
+    RETURN          reduce using rule 36 (letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .)
+    RCURLY          reduce using rule 36 (letStatement -> LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON .)
+
+
+state 198
+
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY . statements RCURLY
+    (28) statements -> . statement statements
+    (29) statements -> . empty
+    (30) statement -> . letStatement
+    (31) statement -> . ifStatement
+    (32) statement -> . whileStatement
+    (33) statement -> . doStatement
+    (34) statement -> . returnStatement
+    (76) empty -> .
+    (35) letStatement -> . LET varName EQ expression SEMICOLON
+    (36) letStatement -> . LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON
+    (37) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY
+    (38) ifStatement -> . IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY
+    (39) whileStatement -> . WHILE LPAREN expression RPAREN LCURLY statements RCURLY
+    (40) doStatement -> . DO subroutineCall SEMICOLON
+    (41) returnStatement -> . RETURN SEMICOLON
+    (42) returnStatement -> . RETURN expression SEMICOLON
+
+    RCURLY          reduce using rule 76 (empty -> .)
+    LET             shift and go to state 101
+    IF              shift and go to state 99
+    WHILE           shift and go to state 91
+    DO              shift and go to state 89
+    RETURN          shift and go to state 92
+
+    statements                     shift and go to state 199
+    doStatement                    shift and go to state 93
+    whileStatement                 shift and go to state 97
+    letStatement                   shift and go to state 100
+    statement                      shift and go to state 94
+    returnStatement                shift and go to state 98
+    empty                          shift and go to state 96
+    ifStatement                    shift and go to state 95
+
+state 199
+
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements . RCURLY
+
+    RCURLY          shift and go to state 200
+
+
+state 200
+
+    (38) ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .
+
+    LET             reduce using rule 38 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .)
+    IF              reduce using rule 38 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .)
+    WHILE           reduce using rule 38 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .)
+    DO              reduce using rule 38 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .)
+    RETURN          reduce using rule 38 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .)
+    RCURLY          reduce using rule 38 (ifStatement -> IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 108 resolved using rule (className -> IDENTIFIER)
+WARNING: rejected rule (varName -> IDENTIFIER) in state 108
+WARNING: reduce/reduce conflict in state 122 resolved using rule (className -> IDENTIFIER)
+WARNING: rejected rule (varName -> IDENTIFIER) in state 122
