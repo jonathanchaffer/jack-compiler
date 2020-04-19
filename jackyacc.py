@@ -106,7 +106,7 @@ def p_whileStatement(p):
 
 def p_doStatement(p):
     '''doStatement : DO subroutineCall SEMICOLON'''
-    p[0] = p[2]
+    p[0] = DoStatementNode(p[2])
 
 def p_returnStatement(p):
     '''returnStatement : RETURN SEMICOLON
@@ -201,7 +201,7 @@ def p_error(p):
 # ast nodes --------------------------------------------------------------------
 
 class AST:
-    def codegen(self, className):
+    def codegen(self,className,outFile):
         pass
 
 class ClassNode(AST):
@@ -210,10 +210,11 @@ class ClassNode(AST):
         self.classVars = classVars
         self.subroutines = subroutines
 
-    def codegen(self, className):
-        print('// codegen class ' + self.className)
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen class ' + self.className + '\n')
+        className = self.className
         for subroutine in self.subroutines:
-            subroutine.codegen(self.className)
+            subroutine.codegen(self.className,outFile)
 
 class SubroutineDecNode(AST):
     def __init__(self, subroutineType, returnType, subroutineName, parameterList, subroutineBody):
@@ -223,84 +224,92 @@ class SubroutineDecNode(AST):
         self.parameterList = parameterList
         self.subroutineBody = subroutineBody
 
-    def codegen(self, className):
-        print('// codegen ' + self.returnType + ' ' + self.subroutineType + ' ' + self.subroutineName)
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen ' + self.returnType + ' ' + self.subroutineType + ' ' + self.subroutineName + '\n')
         for parameter in self.parameterList:
-            parameter.codegen(className)
-        print('function ' + className + '.' + self.subroutineName + ' ' + str(len(self.subroutineBody.varDecs)))
-        self.subroutineBody.codegen(className)
+            parameter.codegen(className,outFile)
+        outFile.write('function ' + className + '.' + self.subroutineName + ' ' + str(len(self.subroutineBody.varDecs)) + '\n')
+        self.subroutineBody.codegen(className,outFile)
 
 class ParameterNode(AST):
     def __init__(self, type, varName):
         self.type = type
         self.varName = varName
 
-    def codegen(self, className):
-        print('// codegen parameter ' + self.varName)
+    def codegen(self,className,outFile):
+        outFile.write('// codegen parameter ' + self.varName + '\n')
 
 class SubroutineBodyNode(AST):
     def __init__(self, varDecs, statements):
         self.varDecs = varDecs
         self.statements = statements
 
-    def codegen(self, className):
-        print('// codegen subroutine body')
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen subroutine body' + '\n')
         for varDec in self.varDecs:
-            varDec.codegen(className)
+            varDec.codegen(className,outFile)
         for statement in self.statements:
-            statement.codegen(className)
+            statement.codegen(className,outFile)
 
 class VarDecNode(AST):
     def __init__(self, type, varName):
         self.type = type
         self.varName = varName
 
-    def codegen(self, className):
-        print('// codegen varDec ' + self.varName)
+    def codegen(self,className,outFile):
+        outFile.write('// codegen varDec ' + self.varName + '\n')
+
+class DoStatementNode(AST):
+    def __init__(self, subroutineCall):
+        self.subroutineCall = subroutineCall
+
+    def codegen(self,className,outFile):
+        self.subroutineCall.codegen(className,outFile)
+        outFile.write('pop temp 0' + '\n')
 
 class ReturnStatementNode(AST):
     def __init__(self, expression):
         self.expression = expression
 
-    def codegen(self, className):
-        print('// codegen returnStatement')
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen returnStatement' + '\n')
         if self.expression is not None:
-            self.expression.codegen(className)
+            self.expression.codegen(className,outFile)
         else:
-            print('push constant 0')
-            print('return')
+            outFile.write('push constant 0' + '\n')
+            outFile.write('return' + '\n')
 
 class IntConstNode(AST):
     def __init__(self, value):
         self.value = value
 
-    def codegen(self, className):
-        print('// codegen intConst ' + str(self.value))
-        print('push constant ' + str(self.value))
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen intConst ' + str(self.value) + '\n')
+        outFile.write('push constant ' + str(self.value) + '\n')
 
 class ExpressionNode(AST):
     def __init__(self, term, opTerms):
         self.term = term
         self.opTerms = opTerms
 
-    def codegen(self, className):
-        print('// codegen expression')
-        self.term.codegen(className)
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen expression' + '\n')
+        self.term.codegen(className,outFile)
         for opTerm in self.opTerms:
-            opTerm.codegen(className)
+            opTerm.codegen(className,outFile)
 
 class OpTermNode(AST):
     def __init__(self, op, term):
         self.op = op
         self.term = term
 
-    def codegen(self, className):
-        print('// codegen opTerm ' + self.op)
-        self.term.codegen(className)
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen opTerm ' + self.op + '\n')
+        self.term.codegen(className,outFile)
         if self.op == '+':
-            print('add')
+            outFile.write('add' + '\n')
         elif self.op == '*':
-            print('call Math.multiply 2')
+            outFile.write('call Math.multiply 2' + '\n')
 
 class SubroutineCallNode(AST):
     def __init__(self, callOn, subroutineName, expressionList):
@@ -308,11 +317,11 @@ class SubroutineCallNode(AST):
         self.subroutineName = subroutineName
         self.expressionList = expressionList
 
-    def codegen(self, className):
-        print('// codegen call ' + self.subroutineName)
+    def codegen(self,className,outFile):
+        # outFile.write('// codegen call ' + self.subroutineName + '\n')
         for expression in self.expressionList:
-            expression.codegen(className)
-        print('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)))
+            expression.codegen(className,outFile)
+        outFile.write('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)) + '\n')
 
 # main function ----------------------------------------------------------------
 
@@ -322,8 +331,12 @@ def main(path):
     with open(path, 'r') as file:
         data = file.read()
 
+    outFile = open(path.replace('.jack','-new.vm'), 'w')
+
     result = parser.parse(data, lexer=lexer)
-    result.codegen(None)
+    result.codegen(None,outFile)
+
+    outFile.close()
 
 if __name__ == '__main__':
     main(sys.argv[1])
