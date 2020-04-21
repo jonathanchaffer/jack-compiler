@@ -1,6 +1,8 @@
 import ply.yacc as yacc
 import sys
 from jacklex import tokens, lexer
+from jackast import *
+from labelgenerator import LabelGenerator
 
 # grammar & AST generation -----------------------------------------------------
 
@@ -18,6 +20,7 @@ def p_type(p):
             | CHAR
             | BOOLEAN
             | className'''
+    p[0] = p[1]
 
 def p_subroutineDecs(p):
     '''subroutineDecs : CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
@@ -52,18 +55,21 @@ def p_subroutineBody(p):
     '''subroutineBody : LCURLY varDecs statements RCURLY'''
     p[0] = SubroutineBodyNode(p[2],p[3])
 
-# TODO: allow multiple varDecs on one line
 def p_varDecs(p):
     '''varDecs : VAR type varName commaVarNames SEMICOLON varDecs'''
-    p[0] = [VarDecNode(p[2],p[3])] + p[6]
+    p[0] = [VarDecNode(p[2],p[3],p[4])] + p[6]
 
 def p_varDecsEmpty(p):
     '''varDecs : empty'''
     p[0] = []
 
 def p_commaVarNames(p):
-    '''commaVarNames : COMMA varName commaVarNames
-                     | empty'''
+    '''commaVarNames : COMMA varName commaVarNames'''
+    p[0] = [VarDecNode(None,p[2],[])] + p[3]
+
+def p_commaVarNamesEmpty(p):
+    '''commaVarNames : empty'''
+    p[0] = []
 
 def p_className(p):
     '''className : IDENTIFIER'''
@@ -96,13 +102,22 @@ def p_statement(p):
 def p_letStatement(p):
     '''letStatement : LET varName EQ expression SEMICOLON
                     | LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON'''
+    if len(p) == 6:
+        p[0] = LetStatementNode(p[2],None,p[4])
+    else:
+        p[0] = LetStatementNode(p[2],p[4],p[7])
 
 def p_ifStatement(p):
     '''ifStatement : IF LPAREN expression RPAREN LCURLY statements RCURLY
                    | IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY'''
+    elseStatements = []
+    if len(p) == 12:
+        elseStatements = p[10]
+    p[0] = IfStatementNode(p[3],p[6],elseStatements)
 
 def p_whileStatement(p):
     '''whileStatement : WHILE LPAREN expression RPAREN LCURLY statements RCURLY'''
+    p[0] = WhileStatementNode(p[3],p[6])
 
 def p_doStatement(p):
     '''doStatement : DO subroutineCall SEMICOLON'''
@@ -136,13 +151,25 @@ def p_termExpression(p):
     '''term : LPAREN expression RPAREN'''
     p[0] = p[2]
 
+def p_termUnaryOpTerm(p):
+    '''term : unaryOp term'''
+    p[0] = UnaryOpNode(p[1],p[2])
+
+def p_termSubroutineCall(p):
+    '''term : subroutineCall'''
+    p[0] = p[1]
+
+def p_termVarName(p):
+    '''term : varName'''
+    p[0] = VarRefNode(p[1])
+
+def p_termKeywordConstant(p):
+    '''term : keywordConstant'''
+    p[0] = p[1]
+
 def p_termOther(p):
     '''term : STRING_CONST
-    | keywordConstant
-    | varName
-    | varName LSQUARE expression RSQUARE
-    | subroutineCall
-    | unaryOp term'''
+            | varName LSQUARE expression RSQUARE'''
 
 def p_subroutineCall(p):
     '''subroutineCall : subroutineName LPAREN expressionList RPAREN
@@ -184,12 +211,14 @@ def p_op(p):
 def p_unaryOp(p):
     '''unaryOp : MINUS
                | TILDE'''
+    p[0] = p[1]
 
 def p_keywordConstant(p):
     '''keywordConstant : TRUE
                        | FALSE
                        | NULL
                        | THIS'''
+    p[0] = KeywordConstantNode(p[1])
 
 def p_empty(p):
     '''empty :'''
@@ -197,131 +226,6 @@ def p_empty(p):
 
 def p_error(p):
     print('Syntax error in input!')
-
-# ast nodes --------------------------------------------------------------------
-
-class AST:
-    def codegen(self,className,outFile):
-        pass
-
-class ClassNode(AST):
-    def __init__(self, className, classVars, subroutines):
-        self.className = className
-        self.classVars = classVars
-        self.subroutines = subroutines
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen class ' + self.className + '\n')
-        className = self.className
-        for subroutine in self.subroutines:
-            subroutine.codegen(self.className,outFile)
-
-class SubroutineDecNode(AST):
-    def __init__(self, subroutineType, returnType, subroutineName, parameterList, subroutineBody):
-        self.subroutineType = subroutineType
-        self.returnType = returnType
-        self.subroutineName = subroutineName
-        self.parameterList = parameterList
-        self.subroutineBody = subroutineBody
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen ' + self.returnType + ' ' + self.subroutineType + ' ' + self.subroutineName + '\n')
-        for parameter in self.parameterList:
-            parameter.codegen(className,outFile)
-        outFile.write('function ' + className + '.' + self.subroutineName + ' ' + str(len(self.subroutineBody.varDecs)) + '\n')
-        self.subroutineBody.codegen(className,outFile)
-
-class ParameterNode(AST):
-    def __init__(self, type, varName):
-        self.type = type
-        self.varName = varName
-
-    def codegen(self,className,outFile):
-        outFile.write('// codegen parameter ' + self.varName + '\n')
-
-class SubroutineBodyNode(AST):
-    def __init__(self, varDecs, statements):
-        self.varDecs = varDecs
-        self.statements = statements
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen subroutine body' + '\n')
-        for varDec in self.varDecs:
-            varDec.codegen(className,outFile)
-        for statement in self.statements:
-            statement.codegen(className,outFile)
-
-class VarDecNode(AST):
-    def __init__(self, type, varName):
-        self.type = type
-        self.varName = varName
-
-    def codegen(self,className,outFile):
-        outFile.write('// codegen varDec ' + self.varName + '\n')
-
-class DoStatementNode(AST):
-    def __init__(self, subroutineCall):
-        self.subroutineCall = subroutineCall
-
-    def codegen(self,className,outFile):
-        self.subroutineCall.codegen(className,outFile)
-        outFile.write('pop temp 0' + '\n')
-
-class ReturnStatementNode(AST):
-    def __init__(self, expression):
-        self.expression = expression
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen returnStatement' + '\n')
-        if self.expression is not None:
-            self.expression.codegen(className,outFile)
-        else:
-            outFile.write('push constant 0' + '\n')
-            outFile.write('return' + '\n')
-
-class IntConstNode(AST):
-    def __init__(self, value):
-        self.value = value
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen intConst ' + str(self.value) + '\n')
-        outFile.write('push constant ' + str(self.value) + '\n')
-
-class ExpressionNode(AST):
-    def __init__(self, term, opTerms):
-        self.term = term
-        self.opTerms = opTerms
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen expression' + '\n')
-        self.term.codegen(className,outFile)
-        for opTerm in self.opTerms:
-            opTerm.codegen(className,outFile)
-
-class OpTermNode(AST):
-    def __init__(self, op, term):
-        self.op = op
-        self.term = term
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen opTerm ' + self.op + '\n')
-        self.term.codegen(className,outFile)
-        if self.op == '+':
-            outFile.write('add' + '\n')
-        elif self.op == '*':
-            outFile.write('call Math.multiply 2' + '\n')
-
-class SubroutineCallNode(AST):
-    def __init__(self, callOn, subroutineName, expressionList):
-        self.callOn = callOn
-        self.subroutineName = subroutineName
-        self.expressionList = expressionList
-
-    def codegen(self,className,outFile):
-        # outFile.write('// codegen call ' + self.subroutineName + '\n')
-        for expression in self.expressionList:
-            expression.codegen(className,outFile)
-        outFile.write('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)) + '\n')
 
 # main function ----------------------------------------------------------------
 
@@ -334,7 +238,7 @@ def main(path):
     outFile = open(path.replace('.jack','-new.vm'), 'w')
 
     result = parser.parse(data, lexer=lexer)
-    result.codegen(None,outFile)
+    result.codegen(None,outFile,SymbolTable(),SymbolTable(),LabelGenerator())
 
     outFile.close()
 
