@@ -72,7 +72,7 @@ def t_STRING_CONST(t):
     t.value = t.value[1:-1]
 
 def t_newline(t):
-    r'\n+'
+    r'\n+|\r'
     t.lexer.lineno += len(t.value)
 
 def t_error(t):
