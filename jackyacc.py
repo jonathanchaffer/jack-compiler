@@ -11,9 +11,21 @@ def p_class(p):
     p[0] = ClassNode(p[2],p[4],p[5])
 
 def p_classVarDecs(p):
-    '''classVarDecs : STATIC type varName commaVarNames SEMICOLON classVarDecs
-                    | FIELD type varName commaVarNames SEMICOLON classVarDecs
-                    | empty'''
+    '''classVarDecs : STATIC type varName commaClassVarNames SEMICOLON classVarDecs
+                    | FIELD type varName commaClassVarNames SEMICOLON classVarDecs'''
+    p[0] = [ClassVarDecNode(p[1],p[2],p[3],p[4])] + p[6]
+
+def p_classVarDecsEmpty(p):
+    '''classVarDecs : empty'''
+    p[0] = []
+
+def p_commaClassVarNames(p):
+    '''commaClassVarNames : COMMA varName commaClassVarNames'''
+    p[0] = [ClassVarDecNode(None,None,p[2],[])] + p[3]
+
+def p_commaClassVarNamesEmpty(p):
+    '''commaClassVarNames : empty'''
+    p[0] = []
 
 def p_type(p):
     '''type : INT
@@ -108,12 +120,12 @@ def p_letStatement(p):
         p[0] = LetStatementNode(p[2],p[4],p[7])
 
 def p_ifStatement(p):
-    '''ifStatement : IF LPAREN expression RPAREN LCURLY statements RCURLY
-                   | IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY'''
-    elseStatements = []
-    if len(p) == 12:
-        elseStatements = p[10]
-    p[0] = IfStatementNode(p[3],p[6],elseStatements)
+    '''ifStatement : IF LPAREN expression RPAREN LCURLY statements RCURLY'''
+    p[0] = IfStatementNode(p[3],p[6])
+
+def p_ifElseStatement(p):
+    '''ifStatement : IF LPAREN expression RPAREN LCURLY statements RCURLY ELSE LCURLY statements RCURLY'''
+    p[0] = IfElseStatementNode(p[3],p[6],p[10])
 
 def p_whileStatement(p):
     '''whileStatement : WHILE LPAREN expression RPAREN LCURLY statements RCURLY'''
@@ -178,7 +190,7 @@ def p_subroutineCall(p):
     if len(p) == 7:
         p[0] = SubroutineCallNode(p[1],p[3],p[5])
     else:
-        p[0] = SubroutineCallNode(None,p[3],p[5])
+        p[0] = SubroutineCallNode(None,p[1],p[3])
 
 def p_expressionList(p):
     '''expressionList : expression commaExpressions'''
