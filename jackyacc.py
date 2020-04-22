@@ -247,7 +247,7 @@ def main(path):
     with open(path, 'r') as file:
         data = file.read()
 
-    outFile = open(path.replace('.jack','-new.vm'), 'w')
+    outFile = open(path.replace('.jack','*.vm'), 'w')
 
     result = parser.parse(data, lexer=lexer)
     result.codegen(None,outFile,SymbolTable(),SymbolTable(),LabelGenerator())
