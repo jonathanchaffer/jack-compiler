@@ -102,13 +102,13 @@ class LetStatementNode(AST):
                 outFile.write('pop local ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
             elif subroutineSymbols.kindOf(self.varName) == Kind.ARG:
                 outFile.write('pop argument ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
-            elif classSymbols.contains(self.varName):
-                if classSymbols.kindOf(self.varName) == Kind.STATIC:
-                    outFile.write('pop static ' + str(classSymbols.indexOf(self.varName)) + '\n')
-                elif classSymbols.kindOf(self.varName) == Kind.FIELD:
-                    outFile.write('pop this ' + str(classSymbols.indexOf(self.varName)) + '\n')
-            else:
-                print('Error: ' + self.varName + ' not defined in current context.')
+        elif classSymbols.contains(self.varName):
+            if classSymbols.kindOf(self.varName) == Kind.STATIC:
+                outFile.write('pop static ' + str(classSymbols.indexOf(self.varName)) + '\n')
+            elif classSymbols.kindOf(self.varName) == Kind.FIELD:
+                outFile.write('pop this ' + str(classSymbols.indexOf(self.varName)) + '\n')
+        else:
+            print('Error: ' + self.varName + ' not defined in current context.')
 
 class IfStatementNode(AST):
     def __init__(self, expression, statements, elseStatements):
@@ -225,7 +225,20 @@ class SubroutineCallNode(AST):
         # outFile.write('// codegen call ' + self.subroutineName + '\n')
         for expression in self.expressionList:
             expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
-        outFile.write('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)) + '\n')
+        if subroutineSymbols.contains(self.callOn):
+            if subroutineSymbols.kindOf(self.callOn) == Kind.VAR:
+                outFile.write('push local ' + str(subroutineSymbols.indexOf(self.callOn)) + '\n')
+            elif subroutineSymbols.kindOf(self.callOn) == Kind.ARG:
+                outFile.write('push argument ' + str(subroutineSymbols.indexOf(self.callOn)) + '\n')
+            outFile.write('call ' + subroutineSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
+        elif classSymbols.contains(self.callOn):
+            if classSymbols.kindOf(self.callOn) == Kind.STATIC:
+                outFile.write('push static ' + str(classSymbols.indexOf(self.callOn)) + '\n')
+            elif classSymbols.kindOf(self.callOn) == Kind.FIELD:
+                outFile.write('push this ' + str(classSymbols.indexOf(self.callOn)) + '\n')
+                outFile.write('call ' + subroutineSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
+        else:
+            outFile.write('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)) + '\n')
 
 class UnaryOpNode(AST):
     def __init__(self, unaryOp, term):
