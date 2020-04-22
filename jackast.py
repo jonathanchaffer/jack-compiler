@@ -33,7 +33,7 @@ class ClassVarDecNode(AST):
         elif self.kind == 'field':
             kind = Kind.FIELD
         classSymbols.define(self.varName, self.type, kind)
-        # print('// define symbol ' + self.varName + ': type ' + self.type)
+        # print('// define symbol ' + self.varName + ': type ' + self.type + ', kind ' + str(kind))
         for additionalClassVarDec in self.additionalClassVarDecs:
             additionalClassVarDec.kind = self.kind
             additionalClassVarDec.type = self.type
@@ -58,12 +58,12 @@ class SubroutineDecNode(AST):
             numLocals += len(varDec.additionalVarDecs)
         outFile.write('function ' + className + '.' + self.subroutineName + ' ' + str(numLocals) + '\n')
         if self.subroutineType == 'constructor':
-            outFile.write('push constant ' + str(len(self.parameterList)) + '\n')
-            outFile.write('call Memory.alloc 1 ' + '\n')
-            outFile.write('pop pointer 0 ' + '\n')
+            outFile.write('push constant ' + str(classSymbols.varCount(Kind.FIELD)) + '\n')
+            outFile.write('call Memory.alloc 1' + '\n')
+            outFile.write('pop pointer 0' + '\n')
         elif self.subroutineType == 'method':
             outFile.write('push argument 0' + '\n')
-            outFile.write('pop pointer 0 ' + '\n')
+            outFile.write('pop pointer 0' + '\n')
         self.subroutineBody.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
 
 class ParameterNode(AST):
@@ -288,7 +288,7 @@ class SubroutineCallNode(AST):
                     outFile.write('push static ' + str(classSymbols.indexOf(self.callOn)) + '\n')
                 elif classSymbols.kindOf(self.callOn) == Kind.FIELD:
                     outFile.write('push this ' + str(classSymbols.indexOf(self.callOn)) + '\n')
-                    outFile.write('call ' + subroutineSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
+                    outFile.write('call ' + classSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
             else:
                 outFile.write('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)) + '\n')
 
