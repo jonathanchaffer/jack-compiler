@@ -4,6 +4,17 @@ class AST:
     def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
         pass
 
+class StringConstNode(AST):
+    def __init__(self, text):
+        self.text = text
+
+    def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
+        outFile.write('push constant ' + str(len(self.text)) + '\n')
+        outFile.write('call String.new 1' + '\n')
+        for char in self.text:
+            outFile.write('push constant ' + str(ord(char)) + '\n')
+            outFile.write('call String.appendChar 2' + '\n')
+
 class ClassNode(AST):
     def __init__(self, className, classVarDecs, subroutineDecs):
         self.className = className
@@ -101,24 +112,6 @@ class VarDecNode(AST):
             additionalVarDec.type = self.type
             additionalVarDec.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
 
-class VarRefNode(AST):
-    def __init__(self, varName):
-        self.varName = varName
-
-    def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
-        if subroutineSymbols.contains(self.varName):
-            if subroutineSymbols.kindOf(self.varName) == Kind.VAR:
-                outFile.write('push local ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
-            elif subroutineSymbols.kindOf(self.varName) == Kind.ARG:
-                outFile.write('push argument ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
-        elif classSymbols.contains(self.varName):
-            if classSymbols.kindOf(self.varName) == Kind.STATIC:
-                outFile.write('push static ' + str(classSymbols.indexOf(self.varName)) + '\n')
-            elif classSymbols.kindOf(self.varName) == Kind.FIELD:
-                outFile.write('push this ' + str(classSymbols.indexOf(self.varName)) + '\n')
-        else:
-            print('Error: ' + self.varName + ' not defined in current context.')
-
 class LetStatementNode(AST):
     def __init__(self, varName, offsetExpression, expression):
         self.varName = varName
@@ -126,19 +119,29 @@ class LetStatementNode(AST):
         self.expression = expression
 
     def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
-        self.expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
-        if subroutineSymbols.contains(self.varName):
-            if subroutineSymbols.kindOf(self.varName) == Kind.VAR:
-                outFile.write('pop local ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
-            elif subroutineSymbols.kindOf(self.varName) == Kind.ARG:
-                outFile.write('pop argument ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
-        elif classSymbols.contains(self.varName):
-            if classSymbols.kindOf(self.varName) == Kind.STATIC:
-                outFile.write('pop static ' + str(classSymbols.indexOf(self.varName)) + '\n')
-            elif classSymbols.kindOf(self.varName) == Kind.FIELD:
-                outFile.write('pop this ' + str(classSymbols.indexOf(self.varName)) + '\n')
+        if self.offsetExpression is not None:
+            self.offsetExpression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+            VarRefNode(self.varName).codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+            outFile.write('add' + '\n')
+            self.expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+            outFile.write('pop temp 0' + '\n')
+            outFile.write('pop pointer 1' + '\n')
+            outFile.write('push temp 0' + '\n')
+            outFile.write('pop that 0' + '\n')
         else:
-            print('Error: ' + self.varName + ' not defined in current context.')
+            self.expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+            if subroutineSymbols.contains(self.varName):
+                if subroutineSymbols.kindOf(self.varName) == Kind.VAR:
+                    outFile.write('pop local ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
+                elif subroutineSymbols.kindOf(self.varName) == Kind.ARG:
+                    outFile.write('pop argument ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
+            elif classSymbols.contains(self.varName):
+                if classSymbols.kindOf(self.varName) == Kind.STATIC:
+                    outFile.write('pop static ' + str(classSymbols.indexOf(self.varName)) + '\n')
+                elif classSymbols.kindOf(self.varName) == Kind.FIELD:
+                    outFile.write('pop this ' + str(classSymbols.indexOf(self.varName)) + '\n')
+            else:
+                print('LetStatementNode: Error: ' + self.varName + ' not defined in current context.')
 
 class IfStatementNode(AST):
     def __init__(self, expression, statements):
@@ -260,6 +263,37 @@ class OpTermNode(AST):
             outFile.write('gt' + '\n')
         elif self.op == '=':
             outFile.write('eq' + '\n')
+
+class VarRefNode(AST):
+    def __init__(self, varName):
+        self.varName = varName
+
+    def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
+        if subroutineSymbols.contains(self.varName):
+            if subroutineSymbols.kindOf(self.varName) == Kind.VAR:
+                outFile.write('push local ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
+            elif subroutineSymbols.kindOf(self.varName) == Kind.ARG:
+                outFile.write('push argument ' + str(subroutineSymbols.indexOf(self.varName)) + '\n')
+        elif classSymbols.contains(self.varName):
+            if classSymbols.kindOf(self.varName) == Kind.STATIC:
+                outFile.write('push static ' + str(classSymbols.indexOf(self.varName)) + '\n')
+            elif classSymbols.kindOf(self.varName) == Kind.FIELD:
+                outFile.write('push this ' + str(classSymbols.indexOf(self.varName)) + '\n')
+        else:
+            print('VarRefNode: Error: ' + self.varName + ' not defined in current context.')
+
+class ArrayRefNode(AST):
+    def __init__(self, varName, offsetExpression):
+        self.varName = varName
+        self.offsetExpression = offsetExpression
+
+    def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
+        # outFile.write('// codegen arrayRef ' + self.varName + '\n')
+        self.offsetExpression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+        VarRefNode(self.varName).codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+        outFile.write('add' + '\n')
+        outFile.write('pop pointer 1' + '\n')
+        outFile.write('push that 0' + '\n')
 
 class SubroutineCallNode(AST):
     def __init__(self, callOn, subroutineName, expressionList):

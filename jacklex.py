@@ -58,7 +58,7 @@ t_TILDE = r'~'
 # special tokens ---------------------------------------------------------------
 
 def t_IDENTIFIER(t):
-    r'[A-z|_]+[A-z|0-9|_]*'
+    r'[A-Za-z|_]+[A-Za-z|0-9|_]*'
     t.type = reserved.get(t.value,'IDENTIFIER') # check for reserved words
     return t
 
@@ -68,8 +68,9 @@ def t_INT_CONST(t):
     return t
 
 def t_STRING_CONST(t):
-    r'"(.*)"'
+    r'".*"'
     t.value = t.value[1:-1]
+    return t
 
 def t_newline(t):
     r'\n+|\r'

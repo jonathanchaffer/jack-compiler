@@ -112,12 +112,12 @@ def p_statement(p):
     p[0] = p[1]
 
 def p_letStatement(p):
-    '''letStatement : LET varName EQ expression SEMICOLON
-                    | LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON'''
-    if len(p) == 6:
-        p[0] = LetStatementNode(p[2],None,p[4])
-    else:
-        p[0] = LetStatementNode(p[2],p[4],p[7])
+    '''letStatement : LET varName EQ expression SEMICOLON'''
+    p[0] = LetStatementNode(p[2],None,p[4])
+
+def p_letStatementArray(p):
+    '''letStatement : LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON'''
+    p[0] = LetStatementNode(p[2],p[4],p[7])
 
 def p_ifStatement(p):
     '''ifStatement : IF LPAREN expression RPAREN LCURLY statements RCURLY'''
@@ -171,7 +171,7 @@ def p_termSubroutineCall(p):
     '''term : subroutineCall'''
     p[0] = p[1]
 
-def p_termVarName(p):
+def p_termVarRef(p):
     '''term : varName'''
     p[0] = VarRefNode(p[1])
 
@@ -179,9 +179,13 @@ def p_termKeywordConstant(p):
     '''term : keywordConstant'''
     p[0] = p[1]
 
-def p_termOther(p):
-    '''term : STRING_CONST
-            | varName LSQUARE expression RSQUARE'''
+def p_termStringConst(p):
+    '''term : STRING_CONST'''
+    p[0] = StringConstNode(p[1])
+
+def p_termArrayRef(p):
+    '''term : varName LSQUARE expression RSQUARE'''
+    p[0] = ArrayRefNode(p[1],p[3])
 
 def p_subroutineCall(p):
     '''subroutineCall : subroutineName LPAREN expressionList RPAREN
