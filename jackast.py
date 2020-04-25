@@ -61,6 +61,8 @@ class SubroutineDecNode(AST):
     def codegen(self,className,outFile,classSymbols,subroutineSymbols,labelGenerator):
         # outFile.write('// codegen ' + self.returnType + ' ' + self.subroutineType + ' ' + self.subroutineName + '\n')
         subroutineSymbols.startSubroutine()
+        if self.subroutineType == 'method':
+            subroutineSymbols.define('this',className,Kind.ARG)
         for parameter in self.parameterList:
             parameter.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
         numLocals = 0
