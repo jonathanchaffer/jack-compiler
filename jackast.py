@@ -311,21 +311,25 @@ class SubroutineCallNode(AST):
                 expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
             outFile.write('call ' + className + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
         else:
-            for expression in self.expressionList:
-                expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
             if subroutineSymbols.contains(self.callOn):
                 if subroutineSymbols.kindOf(self.callOn) == Kind.VAR:
                     outFile.write('push local ' + str(subroutineSymbols.indexOf(self.callOn)) + '\n')
                 elif subroutineSymbols.kindOf(self.callOn) == Kind.ARG:
                     outFile.write('push argument ' + str(subroutineSymbols.indexOf(self.callOn)) + '\n')
+                for expression in self.expressionList:
+                    expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
                 outFile.write('call ' + subroutineSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
             elif classSymbols.contains(self.callOn):
                 if classSymbols.kindOf(self.callOn) == Kind.STATIC:
                     outFile.write('push static ' + str(classSymbols.indexOf(self.callOn)) + '\n')
                 elif classSymbols.kindOf(self.callOn) == Kind.FIELD:
                     outFile.write('push this ' + str(classSymbols.indexOf(self.callOn)) + '\n')
-                    outFile.write('call ' + classSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
+                for expression in self.expressionList:
+                    expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
+                outFile.write('call ' + classSymbols.typeOf(self.callOn) + '.' + self.subroutineName + ' ' + str(len(self.expressionList) + 1) + '\n')
             else:
+                for expression in self.expressionList:
+                    expression.codegen(className,outFile,classSymbols,subroutineSymbols,labelGenerator)
                 outFile.write('call ' + self.callOn + '.' + self.subroutineName + ' ' + str(len(self.expressionList)) + '\n')
 
 class UnaryOpNode(AST):

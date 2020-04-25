@@ -241,7 +241,7 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    print('Syntax error in input!')
+    print('Syntax error at token ' + p.type + ' ' + p.value)
 
 # main function ----------------------------------------------------------------
 

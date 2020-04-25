@@ -58,7 +58,7 @@ t_TILDE = r'~'
 # special tokens ---------------------------------------------------------------
 
 def t_IDENTIFIER(t):
-    r'[A-Za-z|_]+[A-Za-z|0-9|_]*'
+    r'[A-Za-z_]+[A-Za-z0-9_]*'
     t.type = reserved.get(t.value,'IDENTIFIER') # check for reserved words
     return t
 
