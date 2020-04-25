@@ -7,12 +7,12 @@ from labelgenerator import LabelGenerator
 # grammar & AST generation -----------------------------------------------------
 
 def p_class(p):
-    '''class : CLASS className LCURLY classVarDecs subroutineDecs RCURLY'''
+    '''class : CLASS name LCURLY classVarDecs subroutineDecs RCURLY'''
     p[0] = ClassNode(p[2],p[4],p[5])
 
 def p_classVarDecs(p):
-    '''classVarDecs : STATIC type varName commaClassVarNames SEMICOLON classVarDecs
-                    | FIELD type varName commaClassVarNames SEMICOLON classVarDecs'''
+    '''classVarDecs : STATIC type name commaClassVarNames SEMICOLON classVarDecs
+                    | FIELD type name commaClassVarNames SEMICOLON classVarDecs'''
     p[0] = [ClassVarDecNode(p[1],p[2],p[3],p[4])] + p[6]
 
 def p_classVarDecsEmpty(p):
@@ -20,7 +20,7 @@ def p_classVarDecsEmpty(p):
     p[0] = []
 
 def p_commaClassVarNames(p):
-    '''commaClassVarNames : COMMA varName commaClassVarNames'''
+    '''commaClassVarNames : COMMA name commaClassVarNames'''
     p[0] = [ClassVarDecNode(None,None,p[2],[])] + p[3]
 
 def p_commaClassVarNamesEmpty(p):
@@ -31,16 +31,16 @@ def p_type(p):
     '''type : INT
             | CHAR
             | BOOLEAN
-            | className'''
+            | name'''
     p[0] = p[1]
 
 def p_subroutineDecs(p):
-    '''subroutineDecs : CONSTRUCTOR VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
-                      | CONSTRUCTOR type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
-                      | FUNCTION VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
-                      | FUNCTION type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
-                      | METHOD VOID subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs
-                      | METHOD type subroutineName LPAREN parameterList RPAREN subroutineBody subroutineDecs'''
+    '''subroutineDecs : CONSTRUCTOR VOID name LPAREN parameterList RPAREN subroutineBody subroutineDecs
+                      | CONSTRUCTOR type name LPAREN parameterList RPAREN subroutineBody subroutineDecs
+                      | FUNCTION VOID name LPAREN parameterList RPAREN subroutineBody subroutineDecs
+                      | FUNCTION type name LPAREN parameterList RPAREN subroutineBody subroutineDecs
+                      | METHOD VOID name LPAREN parameterList RPAREN subroutineBody subroutineDecs
+                      | METHOD type name LPAREN parameterList RPAREN subroutineBody subroutineDecs'''
     p[0] = [SubroutineDecNode(p[1],p[2],p[3],p[5],p[7])] + p[8]
 
 def p_subroutineDecsEmpty(p):
@@ -48,7 +48,7 @@ def p_subroutineDecsEmpty(p):
     p[0] = []
 
 def p_parameterList(p):
-    '''parameterList : type varName additionalParameters'''
+    '''parameterList : type name additionalParameters'''
     p[0] = [ParameterNode(p[1],p[2])] + p[3]
 
 def p_parameterListEmpty(p):
@@ -56,7 +56,7 @@ def p_parameterListEmpty(p):
     p[0] = []
 
 def p_additionalParameters(p):
-    '''additionalParameters : COMMA type varName additionalParameters'''
+    '''additionalParameters : COMMA type name additionalParameters'''
     p[0] = [ParameterNode(p[2],p[3])] + p[4]
 
 def p_additionalParametersEmpty(p):
@@ -68,7 +68,7 @@ def p_subroutineBody(p):
     p[0] = SubroutineBodyNode(p[2],p[3])
 
 def p_varDecs(p):
-    '''varDecs : VAR type varName commaVarNames SEMICOLON varDecs'''
+    '''varDecs : VAR type name commaVarNames SEMICOLON varDecs'''
     p[0] = [VarDecNode(p[2],p[3],p[4])] + p[6]
 
 def p_varDecsEmpty(p):
@@ -76,23 +76,15 @@ def p_varDecsEmpty(p):
     p[0] = []
 
 def p_commaVarNames(p):
-    '''commaVarNames : COMMA varName commaVarNames'''
+    '''commaVarNames : COMMA name commaVarNames'''
     p[0] = [VarDecNode(None,p[2],[])] + p[3]
 
 def p_commaVarNamesEmpty(p):
     '''commaVarNames : empty'''
     p[0] = []
 
-def p_className(p):
-    '''className : IDENTIFIER'''
-    p[0] = p[1]
-
-def p_subroutineName(p):
-    '''subroutineName : IDENTIFIER'''
-    p[0] = p[1]
-
-def p_varName(p):
-    '''varName : IDENTIFIER'''
+def p_name(p):
+    '''name : IDENTIFIER'''
     p[0] = p[1]
 
 def p_statements(p):
@@ -112,11 +104,11 @@ def p_statement(p):
     p[0] = p[1]
 
 def p_letStatement(p):
-    '''letStatement : LET varName EQ expression SEMICOLON'''
+    '''letStatement : LET name EQ expression SEMICOLON'''
     p[0] = LetStatementNode(p[2],None,p[4])
 
 def p_letStatementArray(p):
-    '''letStatement : LET varName LSQUARE expression RSQUARE EQ expression SEMICOLON'''
+    '''letStatement : LET name LSQUARE expression RSQUARE EQ expression SEMICOLON'''
     p[0] = LetStatementNode(p[2],p[4],p[7])
 
 def p_ifStatement(p):
@@ -172,7 +164,7 @@ def p_termSubroutineCall(p):
     p[0] = p[1]
 
 def p_termVarRef(p):
-    '''term : varName'''
+    '''term : name'''
     p[0] = VarRefNode(p[1])
 
 def p_termKeywordConstant(p):
@@ -184,13 +176,12 @@ def p_termStringConst(p):
     p[0] = StringConstNode(p[1])
 
 def p_termArrayRef(p):
-    '''term : varName LSQUARE expression RSQUARE'''
+    '''term : name LSQUARE expression RSQUARE'''
     p[0] = ArrayRefNode(p[1],p[3])
 
 def p_subroutineCall(p):
-    '''subroutineCall : subroutineName LPAREN expressionList RPAREN
-                      | className DOT subroutineName LPAREN expressionList RPAREN
-                      | varName DOT subroutineName LPAREN expressionList RPAREN'''
+    '''subroutineCall : name LPAREN expressionList RPAREN
+                      | name DOT name LPAREN expressionList RPAREN'''
     if len(p) == 7:
         p[0] = SubroutineCallNode(p[1],p[3],p[5])
     else:
@@ -251,7 +242,7 @@ def main(path):
     with open(path, 'r') as file:
         data = file.read()
 
-    outFile = open(path.replace('.jack','*.vm'), 'w')
+    outFile = open(path.replace('.jack','.vm'), 'w')
 
     result = parser.parse(data, lexer=lexer)
     result.codegen(None,outFile,SymbolTable(),SymbolTable(),LabelGenerator())
